@@ -1,0 +1,8 @@
+- api:
+    def: api_web_user_id_address_GET()
+    request:
+      url: /api/users/me/addresses
+      method: GET
+      headers:
+        x-access-token: $access_token
+        x-channel: web

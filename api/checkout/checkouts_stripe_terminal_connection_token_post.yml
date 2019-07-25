@@ -1,0 +1,5 @@
+- api:
+    def: api_stripe_terminal_connection_token_POST()
+    request:
+      url: /api/stripe_terminal_connection_token
+      method: POST

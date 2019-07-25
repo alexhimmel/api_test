@@ -1,0 +1,7 @@
+- api:
+    def: api_users_id_orders_GET()
+    request:
+      url: /api/users/me/orders
+      method: GET
+      headers:
+        x-access-token: $access_token

@@ -1,0 +1,44 @@
+- test:
+    name: test_get_case_list
+    base_url: ${ENV(casehub_stag)}
+    request:
+      url: /api/cases
+      method: GET
+      headers:
+        authorization: ${get_casehub_login_authorization()}
+        cookie: ${get_casehub_login_cookie()}
+        country: sg
+      params:
+        page: 1
+        limit: 20
+    extract:
+      attachments: content.items.0.attachments
+      case_number: content.items.0.case_number
+      country: content.items.0.country
+      created_at: content.items.0.created_at
+      customer_name: content.items.0.customer_name
+      delivery_date: content.items.0.delivery_date
+      delivery_order_number: content.items.0.delivery_order_number
+      delivery_team: content.items.0.delivery_team
+      delivery_team_id: content.items.0.delivery_team_id
+      id: content.items.0.id
+      issue_type: content.items.0.issue_type
+      issue_type_id: content.items.0.issue_type_id
+      order_number: content.items.0.order_number
+      product_lot: content.items.0.product_lot
+      product_name: content.items.0.product_name
+      product_quantity: content.items.0.product_quantity
+      product_sku: content.items.0.product_sku
+      reporter: content.items.0.reporter
+      reporter_id: content.items.0.reporter_id
+      resolution_details: content.items.0.resolution_details
+      resolution_type: content.items.0.resolution_type
+      resolution_type_id: content.items.0.resolution_type_id
+      summary: content.items.0.summary
+      supplier: content.items.0.supplier
+      supplier_id: content.items.0.supplier_id
+      updated_at: content.items.0.updated_at
+    validate:
+      - eq: ["status_code", 200]
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

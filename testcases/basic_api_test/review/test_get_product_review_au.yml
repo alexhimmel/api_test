@@ -1,0 +1,14 @@
+- test:
+    name: testcases/basic_api_test/review/test_get_product_review_au.yml
+    base_url: ${ENV(au_stag)}
+    request:
+      url: /api/product_reviews
+      method: GET
+      params:
+        limit: 20
+    validate:
+     - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

@@ -1,0 +1,7 @@
+- api:
+    def: api_checkouts_instalment_options_GET()
+    request:
+      url: /api/instalment_options
+      method: GET
+      headers:
+        x-channel: web

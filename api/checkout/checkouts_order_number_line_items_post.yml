@@ -1,0 +1,11 @@
+- api:
+    def: api_checkout_order_number_line_items_POST()
+    request:
+      url: /api/checkouts/$order_number/line_items
+      method: POST
+      headers:
+        x-channel: web
+        x-access-token: $access_token
+      json:
+        quantity: $quantity
+        variant_id: $variant_id_01

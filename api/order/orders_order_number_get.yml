@@ -1,0 +1,11 @@
+- api:
+    def: api_orders_order_number_GET()
+    request:
+      url: /api/orders/$order_number
+      method: GET
+      headers:
+        x-channel: web
+        x-access-token: $access_token
+
+
+

@@ -1,0 +1,10 @@
+- api:
+    def: api_web_users_id_address_DELETE()
+    request:
+      url: /api/users/me/addresses
+      method: DELETE
+      headers:
+        x-channel: web
+        x-access-token: $access_token
+      json:
+        address_id: $address_id

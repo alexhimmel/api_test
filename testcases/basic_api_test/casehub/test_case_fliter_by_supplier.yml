@@ -1,0 +1,18 @@
+- test:
+    name: test_case_fliter_by_supplier
+    base_url: ${ENV(casehub_stag)}
+    request:
+      url: /api/cases
+      method: GET
+      headers:
+        authorization: ${get_casehub_login_authorization()}
+        cookie: ${get_casehub_login_cookie()}
+        country: sg
+      params:
+        page: 1
+        limit: 20
+        supplier: ${get_supplier_id()}
+    validate:
+      - eq: ["status_code", 200]
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

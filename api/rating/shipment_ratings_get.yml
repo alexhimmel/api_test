@@ -1,0 +1,10 @@
+- api:
+    def: api_shipment_ratings_GET()
+    request:
+      url: /api/shipment_ratings/
+      method: GET
+      headers:
+        x-channel: web
+        x-access-token: $access_token
+      params:
+        shipment_id: $shipment_0_id

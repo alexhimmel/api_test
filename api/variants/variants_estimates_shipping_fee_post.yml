@@ -1,0 +1,19 @@
+- api:
+    def: api_estimates_shipping_fee_POST()
+    request:
+      url: /api/estimates/shipping_fee
+      method: POST
+      params:
+        product_id: $product_id
+        variant_id: $variant_id
+        quantity: 1
+        zipcode: 238405
+        state: singapore
+        city: singapore
+        options:
+          bundle_options:
+            - bundle_option_id: 0
+            - bundle_option_variant_id: 0
+          customizations:
+            - option_id: 0
+            - value_id: 0

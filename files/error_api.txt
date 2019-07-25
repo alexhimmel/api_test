@@ -1,0 +1,16 @@
+没调查清楚API具体情况
+testcases/basic_api_test/rating/test_shipment_ratings_get.yml
+
+没连接pos机器无法使用这个api
+testcases/basic_api_test/checkout/test_checkouts_order_number_stripe_checkout_post.yml
+
+Google验证过不了
+testcases/basic_api_test/contact_us/test_contact_us_post.yml
+
+发送的随机一次性guest token去客户邮箱。。拿不到这个动态token
+testcases/basic_api_test/user/test_users_reset_password_post.yml
+
+不确定这个API现在还有没在用
+testcases/basic_api_test/variant_collection/test_variant_colections_permalink_get.yml
+
+其他一些报错的API在单独跑的时候可以跑通，可能是一次性跑太多API导致一些错误，后面可以尝试一个个文件夹跑把report也拆分开

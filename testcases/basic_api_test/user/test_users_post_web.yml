@@ -1,0 +1,10 @@
+- test:
+    name: testcases/basic_api_test/user/test_users_post_web.yml
+    base_url: ${ENV(sg_stag)}
+    api: api_web_users_POST()
+    validate:
+      - eq: ["status_code", 201]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

@@ -1,0 +1,10 @@
+- api:
+    def: api_checkouts_order_stripe_offline_intent_POST()
+    request:
+      url: /api/checkouts/$order_number/stripe_offline_intent
+      method: POST
+      headers:
+        x-channel: web
+        x-access-token: $access_token
+      json:
+        amount: ${ENV(price_01)}

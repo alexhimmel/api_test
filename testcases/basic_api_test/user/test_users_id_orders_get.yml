@@ -1,0 +1,20 @@
+- test:
+    name: testcases/basic_api_test/token/test_oauth_token_post.yml
+    testcase: testcases/basic_api_test/token/test_oauth_token_post.yml
+    output:
+      - access_token
+
+- test:
+    name: testcases/basic_api_test/user/test_users_id_orders_get.yml
+    base_url: ${ENV(sg_stag)}
+    api: api_users_me_orders_GET()
+    extract:
+      order_0_id: content.0.id
+      shipment_0_number: content.0.shipments.0.number
+      shipment_0_id: content.0.shipments.0.id
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

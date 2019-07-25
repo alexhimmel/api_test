@@ -1,0 +1,12 @@
+- api:
+    def: api_checkouts_order_number_PUT()
+    request:
+      url: /api/checkouts/$order_number
+      method: PUT
+      headers:
+        x-access-token: $access_token
+        x-channel: web
+      json:
+        city: $city
+
+

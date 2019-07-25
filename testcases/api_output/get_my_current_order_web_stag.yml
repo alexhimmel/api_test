@@ -1,0 +1,26 @@
+- test:
+    name: get_access_token
+    testcase: testcases/basic_api_test/token/test_oauth_token_post.yml
+    output:
+      - access_token
+
+- test:
+    name: testcases/api_output/get_my_current_order_web_stag.yml
+    base_url: ${ENV(sg_stag)}
+    request:
+      url: /api/users/me/orders
+      method: GET
+      headers:
+        x-channel: web
+        x-access-token: $access_token
+    extract:
+      current_0_order: content.0.number
+      review_product_id: content.0.line_items.0.variant.product_id
+      review_variant_id: content.0.line_items.0.variant.id
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}
+

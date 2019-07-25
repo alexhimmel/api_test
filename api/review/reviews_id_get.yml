@@ -1,0 +1,10 @@
+- api:
+    def: api_reviews_id_GET()
+    request:
+      url: /api/reviews
+      method: GET
+      headers:
+        x-channel: web
+      params:
+        id: ${ENV(review_id)}
+

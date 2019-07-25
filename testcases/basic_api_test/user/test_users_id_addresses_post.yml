@@ -1,0 +1,79 @@
+- test:
+    name: get_token(testcases/basic_api_test/user/test_users_id_addresses_post.yml)
+    base_url: ${ENV(sg_stag)}
+    request:
+      url: /api/oauth/token
+      method: POST
+      headers:
+        Content-Type: application/json
+        Accept-Encoding: deflate, gzip;q=1.0, *;q=0.5
+        x-channel: web
+      json:
+        grant_type: password
+        username: ${ENV(user_email)}
+        password: ${ENV(user_password)}
+        refresh_token: ""
+    extract:
+      access_token: content.access_token
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}
+
+- test:
+    name: get_user_hash(testcases/basic_api_test/user/test_users_id_addresses_post.yml)
+    base_url: ${ENV(sg_stag)}
+    request:
+      url: /api/users/me
+      method: GET
+      headers:
+        x-channel: web
+        x-access-token: $access_token
+    extract:
+      user_hash_sg_stag: content.user_hash
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}
+
+- test:
+    name: get_autocomplete_address(testcases/basic_api_test/user/test_users_id_addresses_post.yml)
+    base_url: ${ENV(sg_stag)}
+    request:
+      url: /api/addresses
+      method: GET
+      headers:
+        x-channel: web
+      params:
+        q: ${random_alphabet()}
+    extract:
+      building_name: content.0.building_name
+      address_id: content.0.id
+      latitude: content.0.latitude
+      longitude: content.0.longitude
+      street: content.0.street
+      street_number: content.0.street_number
+      zipcode: content.0.zipcode
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}
+
+- test:
+    name: testcases/basic_api_test/user/test_users_id_addresses_post.yml
+    base_url: ${ENV(sg_stag)}
+    api: api_web_users_id_address_POST()
+    validate:
+      - eq: ["status_code", 200]
+    extract:
+      address_id: content.0.id
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

@@ -1,0 +1,15 @@
+- api:
+    def: api_web_users_id_PUT()
+    request:
+      url: /api/users/me
+      method: PUT
+      headers:
+        x-channel: web
+        x-access-token: $new_user_access_token
+      json:
+        email: ${create_random_email()}
+        firstname: ${ENV(first_name)}
+        lastname: ${ENV(last_name)}
+        password: ${ENV(password_api_test)}
+        new_password: ${create_random_password()}
+        phone: ${create_random_phone_number()}

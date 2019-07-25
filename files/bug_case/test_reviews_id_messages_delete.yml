@@ -1,0 +1,15 @@
+- test:
+    name: get_delete_review_id
+    testase: testcases/basic_api_test/review/test_reviews_id_messages_id_put.yml
+    output:
+      - access_token_sg_stag
+      - delete_review_message_id
+
+- test:
+    name: test_api_reviews_review_id_message_id_delete
+    base_url: ${ENV(sg_stag)}
+    api: api_reviews_review_id_message_id_DELETE()
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}

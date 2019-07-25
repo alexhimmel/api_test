@@ -1,0 +1,51 @@
+- test:
+    name: checkout_put
+    base_url: ${ENV(base_url_sg_stag)}
+    request:
+      url: /api/checkouts/$order_number_sg_stag
+      method: PUT
+      headers:
+        x-channel: web
+        x-access-token: $access_token_sg_stag
+      json:
+        special_instructions: ${create_random_string()}
+    extract:
+      item_total: content.total
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}
+
+- test:
+    name: delivery_put
+    base_url: ${ENV(base_url_sg_stag)}
+    request:
+      url: /api/checkouts/$order_number_sg_stag/delivery
+      method: PUT
+      headers:
+        x-channel: web
+        x-access-token: $access_token_sg_stag
+    validate:
+      - eq: ["status_code", 200]
+    extract:
+      shipment_id: content.shipments.0.id
+      address1: content.ship_address.address1
+      city: content.ship_address.city
+      country: content.ship_address.country
+      first_name: content.ship_address.firstname
+      flat: content.ship_address.flat
+      id: content.ship_address.id
+      is_company: content.ship_address.is_company
+      last_name: content.ship_address.lastname
+      level: content.ship_address.level
+      phone: content.ship_address.phone
+      street: content.ship_address.street
+      street_number: content.ship_address.street_number
+      zipcode: content.ship_address.zipcode
+      email_address: content.email
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

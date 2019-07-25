@@ -1,0 +1,17 @@
+- test:
+    name: testcases/basic_api_test/book_appointment/test_appointments_post.yml
+    testcase: testcases/basic_api_test/book_appointment/test_appointments_post.yml
+    output:
+      - access_token
+      - appointment_id
+
+- test:
+    name: testcases/basic_api_test/book_appointment/test_appointments_id_show_up_post.yml
+    base_url: ${ENV(sg_stag)}
+    api: api_appointments_id_show_up_POST()
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

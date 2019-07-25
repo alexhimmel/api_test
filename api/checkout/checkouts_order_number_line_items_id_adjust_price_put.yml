@@ -1,0 +1,11 @@
+- api:
+    def: api_checkouts_order_line_items_id_adjust_price_PUT()
+    request:
+      url: /api/checkouts/$pos_order_number/line_items/$line_items_id_stag/adjust_price
+      method: PUT
+      headers:
+        x-channel: pos
+        x-access-token: $access_token_pos
+      json:
+        adjustment: $adjustment_price
+        type: fixed_amount

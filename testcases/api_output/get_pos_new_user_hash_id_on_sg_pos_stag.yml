@@ -1,0 +1,31 @@
+- test:
+    name: get_access_token_pos
+    testcase: testcases/api_output/get_pos_token.yml
+    output:
+      - access_token_pos
+
+- test:
+    name: testcases/api_output/get_pos_new_user_hash_id_on_sg_pos_stag.yml
+    base_url: ${ENV(sg_pos)}
+    request:
+      url: /api/users
+      method: POST
+      headers:
+        Content-Type: application/json
+        Accept-Encoding: deflate, gzip;q=1.0, *;q=0.5
+        x-channel: pos
+        x-access-token: $access_token_pos
+      json:
+        email: ${create_random_email()}
+        firstname: ${ENV(first_name)}
+        lastname: ${ENV(last_name)}
+        password: ${ENV(password_api_test)}
+        phone: ${create_random_phone_number()}
+    extract:
+      new_user_id: content.user.id
+      new_user_hash: content.user.user_hash
+    validate:
+      - eq: ["status_code", 201]
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}
+

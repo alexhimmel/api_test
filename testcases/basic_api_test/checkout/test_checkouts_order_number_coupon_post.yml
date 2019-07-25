@@ -1,0 +1,17 @@
+- test:
+    name: testcases/api_output/get_guest_token_stag.yml
+    testcase: testcases/api_output/get_guest_token_stag.yml
+    output:
+      - guest_order_number
+      - guest_token
+
+- test:
+    name: testcases/basic_api_test/checkout/test_checkouts_order_number_coupon_post.yml
+    base_url: ${ENV(sg_stag)}
+    api: api_checkouts_order_number_coupon_POST()
+    validate:
+      - eq: ["status_code", 201]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

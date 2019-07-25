@@ -1,0 +1,35 @@
+- test:
+    name: testcases/basic_api_test/product/test_get_product_by_slug.yml
+    variables:
+     - search_q: ${random_alphabet()}
+    base_url: ${ENV(sg_stag)}
+    request:
+      url: /api/autocomplete
+      method: GET
+      headers:
+        x-channel: web
+      params:
+        q: $search_q
+    extract:
+      slug: content.0.slug
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}
+
+- test:
+    name: testcases/basic_api_test/product/test_get_product_by_slug.yml
+    base_url: ${ENV(sg_stag)}
+    request:
+      url: /api/products/$slug
+      method: GET
+      headers:
+        x-channel: web
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

@@ -1,0 +1,7 @@
+- api:
+    def: api_appointments_id_GET()
+    request:
+      url: /api/appointments/$appointment_id
+      method: GET
+      params:
+        phone_number: ${ENV(phone_number)}

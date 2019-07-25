@@ -1,0 +1,8 @@
+- api:
+    def: api_checkouts_order_number_payments_id_DELETE()
+    request:
+      url: /api/checkouts/$pos_order_number/payments/$pos_payment_id
+      method: DELETE
+      headers:
+        x-channel: pos
+        x-access-token: $access_token_pos

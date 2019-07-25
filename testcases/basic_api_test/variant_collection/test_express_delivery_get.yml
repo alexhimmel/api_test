@@ -1,0 +1,13 @@
+- test:
+    name: testcases/basic_api_test/variant_collection/test_express_delivery_get.yml
+    base_url: ${ENV(sg_stag)}
+    api: api_express_delivery_GET()
+    variables:
+      - lead_time: 7
+      - size: 8
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

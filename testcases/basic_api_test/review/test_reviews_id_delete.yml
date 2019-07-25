@@ -1,0 +1,39 @@
+- test:
+    name: testcases/basic_api_test/token/test_oauth_token_post.yml
+    testcase: testcases/basic_api_test/token/test_oauth_token_post.yml
+    output:
+      - access_token
+
+- test:
+    name: testcases/basic_api_test/review/test_reviews_id_delete.yml
+    base_url: ${ENV(sg_stag)}
+    variables:
+      - user_id: ${ENV(user_id)}
+    request:
+      url: api/reviews
+      method: GET
+      headers:
+        x-channel: web
+        x-access-token: $access_token
+      json:
+        user_id: $user_id
+        per_page: 50
+    extract:
+      review_id: content.results.0.id
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}
+
+- test:
+    name: testcases/basic_api_test/review/test_reviews_id_delete.yml
+    base_url: ${ENV(sg_stag)}
+    api: api_reviews_id_DELETE()
+    validate:
+      - eq: ["status_code", 204]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

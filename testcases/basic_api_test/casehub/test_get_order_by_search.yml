@@ -1,0 +1,26 @@
+- test:
+    name: test_get_order_info_by_search
+    base_url: ${ENV(casehub_stag)}
+    skip: "problem"
+    request:
+      url: /api/search/orders/${ENV(erp_order)}
+      method: GET
+      headers:
+        authorization: ${get_casehub_login_authorization()}
+        cookie: ${get_casehub_login_cookie()}
+        country: sg
+    extract:
+      customer_name: content.customer_name
+      order_number: content.order_number
+      delivery_date: content.line_items.0.delivery_date
+      delivery_team: content.line_items.0.delivery_team
+      delivery_team_id: content.line_items.0.delivery_team_id
+      product_name: content.line_items.0.product_name
+      product_sku: content.line_items.0.product_sku
+      quantity: content.line_items.0.quantity
+      supplier: content.line_items.0.supplier
+    validate:
+      - eq: ["status_code", 200]
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}
+

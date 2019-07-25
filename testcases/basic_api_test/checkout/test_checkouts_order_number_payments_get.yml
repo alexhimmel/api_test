@@ -1,0 +1,20 @@
+- test:
+    name: testcases/api_output/get_pos_token.yml
+    testcase: testcases/api_output/get_pos_token.yml
+    output:
+      - access_token_pos
+
+- test:
+    name: testcases/api_output/get_pos_order_number.yml
+    testcase: testcases/api_output/get_pos_order_number.yml
+    output:
+      - pos_order_number
+
+- test:
+    name: testcases/basic_api_test/checkout/test_checkouts_order_number_payments_get.yml
+    base_url: ${ENV(base_url_pos_sg)}
+    api: api_checkouts_order_number_payments_GET()
+    validate:
+      - eq: ["status_code", 200]
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

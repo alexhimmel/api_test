@@ -1,0 +1,18 @@
+- test:
+    name: testcases/basic_api_test/user/test_users_id_addresses_post.yml
+    testcase: testcases/basic_api_test/user/test_users_id_addresses_post.yml
+    output:
+      - access_token
+      - user_hash
+      - address_id
+
+- test:
+    name: testcases/basic_api_test/user/test_users_id_addresses_delete.yml
+    base_url: ${ENV(sg_stag)}
+    api: api_web_users_id_address_DELETE()
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

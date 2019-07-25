@@ -1,0 +1,7 @@
+- api:
+    def: api_campaign_delivery_slots_users_user_id_available_GET()
+    request:
+      url: /api/campaign_delivery_slots/users/${ENV(user_id_sg)}/available
+      method: GET
+    extract:
+      campaign_delivery_slot_id: content.0.slots.0.slot_id

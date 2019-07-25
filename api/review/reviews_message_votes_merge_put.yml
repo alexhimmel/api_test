@@ -1,0 +1,9 @@
+- api:
+    def: api_review_message_votes_merge_PUT()
+    request:
+      url: /api/review_message_votes/merge
+      method: PUT
+      headers:
+        x-access-token: $access_token_sg_stag
+        x-guest-token: $guest_token_sg_stag
+        x-channel: web

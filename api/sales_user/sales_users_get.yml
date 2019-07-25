@@ -1,0 +1,11 @@
+- api:
+    def: api_sales_users_GET()
+    request:
+      url: /api/sales_users
+      method: GET
+      headers:
+        x-access-token: $access_token_pos
+        x-channel: pos
+      json:
+        page: 1
+        per_page: 20

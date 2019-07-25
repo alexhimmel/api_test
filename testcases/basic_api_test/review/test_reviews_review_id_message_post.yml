@@ -1,0 +1,17 @@
+- test:
+    name: testcases/api_output/get_web_stag_review_id.yml
+    testcase: testcases/api_output/get_web_stag_review_id.yml
+    output:
+      - access_token_sg_stag
+      - review_id
+
+- test:
+    name: testcases/basic_api_test/review/test_reviews_review_id_message_post.yml
+    base_url: ${ENV(sg_stag)}
+    api: api_reviews_review_id_message_POST()
+    validate:
+      - eq: ["status_code", 201]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

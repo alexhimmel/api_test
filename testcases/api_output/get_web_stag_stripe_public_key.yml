@@ -1,0 +1,25 @@
+- test:
+    name: testcases/api_output/get_web_stag_order_number.yml
+    testcase: testcases/api_output/get_web_stag_order_number.yml
+    output:
+      - access_token_sg_stag
+      - order_number_sg_stag
+      - checkout_id
+
+- test:
+    name: testcases/api_output/get_web_stag_stripe_public_key.yml
+    base_url: ${ENV(sg_stag)}
+    request:
+      url: /api/stripe_public_api_key
+      method: GET
+      headers:
+        x-channel: web
+        x-access-token: $access_token_sg_stag
+    extract:
+      public_api_key: content.public_api_key
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

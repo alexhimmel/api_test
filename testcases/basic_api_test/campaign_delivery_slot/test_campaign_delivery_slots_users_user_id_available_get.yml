@@ -1,0 +1,10 @@
+- test:
+    name: testcases/basic_api_test/campaign_delivery_slot/test_campaign_delivery_slots_users_user_id_available_get.yml
+    base_url: ${ENV(base_url_sg)}
+    api: api_campaign_delivery_slots_users_user_id_available_GET()
+    validate:
+      - eq: ["status_code", 200]
+    extrace:
+      campaign_delivery_slot_id: content.0.slots.0.slot_id
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

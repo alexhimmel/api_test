@@ -1,0 +1,38 @@
+- test:
+    name: testcases/api_output/get_pos_order_number.yml
+    testcase: testcases/api_output/get_pos_order_number.yml
+    output:
+      - access_token_pos
+      - pos_order_number
+
+- test:
+    name: testcases/basic_api_test/checkout/test_checkouts_order_number_line_items_id_adjust_price_put.yml
+    base_url: ${ENV(sg_pos)}
+    request:
+      url: /api/checkouts/$pos_order_number/line_items
+      method: POST
+      headers:
+        x-channel: pos
+        x-access-token: $access_token_pos
+      json:
+        options:
+          preferred_stock_location_id: 1
+        quantity: 1
+        variant_id: ${ENV(variant_id_02)}
+    extract:
+      line_items_id_stag: content.line_items.0.id
+    validate:
+      - eq: ["status_code", 201]
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}
+
+- test:
+    name: testcases/basic_api_test/checkout/test_checkouts_order_number_line_items_id_adjust_price_put.yml
+    base_url: ${ENV(sg_pos)}
+    variables:
+      - adjustment_price: -50
+    api: api_checkouts_order_line_items_id_adjust_price_PUT()
+    validate:
+      - eq: ["status_code", 200]
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

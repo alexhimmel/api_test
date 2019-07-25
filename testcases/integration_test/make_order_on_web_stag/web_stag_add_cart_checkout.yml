@@ -1,0 +1,82 @@
+- test:
+    name: get_access_token_and_order_number_on_web_stag
+    testcase: testcases/api_output/get_web_stag_order_number.yml
+    output:
+      - access_token_sg_stag
+      - order_number_sg_stag
+      - checkout_id
+
+- test:
+    name: put_checkout_order_number
+    base_url: ${ENV(base_url_sg_stag)}
+    request:
+      url: /api/checkouts/$order_number_sg_stag
+      method: PUT
+      headers:
+        x-channel: web
+        x-access-token: $access_token_sg_stag
+      json:
+        city: Singapore
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}
+
+- test:
+    name: test_get_web_stag_order_add_line_items
+    base_url: ${ENV(base_url_sg_stag)}
+    request:
+      url: /api/checkouts/$order_number_sg_stag/line_items
+      method: POST
+      headers:
+        x-channel: web
+        x-access-token: $access_token_sg_stag
+      json:
+        quantity: 1
+        variant_id: 18
+    validate:
+      - eq: ["status_code", 201]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}
+
+- test:
+    name: get_current_order
+    base_url: ${ENV(base_url_sg_stag)}
+    request:
+      url: api/users/me/current_order
+      method: GET
+      headers:
+        x-channel: web
+        x-access-token: $access_token_sg_stag
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}
+
+- test:
+    name: checkout_registration_put
+    base_url: ${ENV(base_url_sg_stag)}
+    request:
+      url: /api/checkouts/$order_number_sg_stag/registration
+      method: PUT
+      headers:
+        x-channel: web
+        x-access-token: $access_token_sg_stag
+    extract:
+      ship_address_id: content.ship_address.id
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}
+
+
+
+

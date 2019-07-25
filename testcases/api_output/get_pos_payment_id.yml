@@ -1,0 +1,66 @@
+- test:
+    name: get_token(testcases/api_output/get_pos_payment_id.yml)
+    base_url: ${ENV(sg_pos)}
+    request:
+      url: /api/oauth/token
+      method: POST
+      headers:
+        Content-Type: application/json
+        Accept-Encoding: deflate, gzip;q=1.0, *;q=0.5
+        x-channel: web
+      json:
+        grant_type: password
+        username: ${ENV(email_api_test_pos)}
+        password: ${ENV(password_api_test)}
+        refresh_token: ""
+    extract:
+      access_token_pos: content.access_token
+    validate:
+      - eq: ["status_code", 200]
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}
+
+- test:
+    name: get_order_number_pos(testcases/api_output/get_pos_payment_id.yml)
+    base_url: ${ENV(sg_pos)}
+    request:
+      url: /api/checkouts
+      method: POST
+      headers:
+        Content-Type: application/json
+        Accept-Encoding: deflate, gzip;q=1.0, *;q=0.5
+        x-channel: web
+        x-access-token: $access_token_pos
+    extract:
+      #guest_token_pos: content.guest_token
+      order_number_pos: content.number
+    validate:
+      - eq: ["status_code", 201]
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}
+
+
+- test:
+    name: get_pos_payment_id(testcases/api_output/get_pos_payment_id.yml)
+    base_url: ${ENV(sg_pos)}
+    request:
+      url: /api/checkouts/$order_number_pos/payments
+      method: POST
+      headers:
+        Content-Type: application/json
+        Accept-Encoding: deflate, gzip;q=1.0, *;q=0.5
+        x-channel: pos
+        x-access-token: $access_token_pos
+      json:
+        payments_attributes:
+          payment_method_id: 11
+          amount: ${ENV(price_01)}
+          source_attributes:
+            payment_type: Cash
+            remarks: ""
+    extract:
+      payment_id_pos: content.0.id
+    validate:
+      - eq: ["status_code", 201]
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

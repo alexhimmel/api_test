@@ -1,0 +1,7 @@
+- api:
+    def: api_products_id_GET()
+    request:
+      url: /api/products/$line_item_id
+      method: GET
+      headers:
+        x-channel: web

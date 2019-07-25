@@ -1,0 +1,8 @@
+- api:
+    def: api_users_id_current_order_GET()
+    request:
+      url: /api/users/me/current_order
+      method: GET
+      headers:
+        x-channel: web
+        x-access-token: $access_token

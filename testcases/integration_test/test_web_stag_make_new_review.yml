@@ -1,0 +1,53 @@
+- test:
+    name: testcases/integration_test/test_make_an_order_on_web_stag_with_stripe.yml
+    testcase: testcases/integration_test/test_make_an_order_on_web_stag_with_stripe.yml
+    output:
+      - access_token_sg_stag
+      - order_number_sg_stag
+
+- test:
+    name: testcases/integration_test/test_web_stag_make_new_review.yml
+    base_url: ${ENV(base_url_sg_stag)}
+    request:
+      url: /api/users/me/orders
+      method: GET
+      headers:
+        x-channel: web
+        x-access-token: $access_token_sg_stag
+    extract:
+      review_order_sg_stag: content.0.number
+      review_variant_id: content.0.line_items.0.variant.id
+      review_product_id: content.0.line_items.0.variant.product_id
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+      - ${change_order_delivery_status()}
+
+
+- test:
+    name: testcases/integration_test/test_web_stag_make_new_review.yml
+    base_url: ${ENV(base_url_sg_stag)}
+    request:
+      url: /api/reviews
+      method: POST
+      headers:
+        x-channel: web
+        x-access-token: $access_token_sg_stag
+      json:
+        order_number: $order_number_sg_stag
+        product_id: $review_product_id
+        rating_product: 5
+        variant_id: $review_variant_id
+        message:
+          anonymous: true
+          content: ${create_random_string()}
+          images: []
+    extract:
+      review_id: content.id
+    validate:
+      - eq: ["status_code", 201]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+
+

@@ -1,0 +1,12 @@
+- test:
+    name: testcases/basic_api_test/blogs/test_blogs_get.yml
+    base_url: ${ENV(sg_stag)}
+    api: api_blogs_GET()
+    extract:
+      blog_id: content.results.0.id
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

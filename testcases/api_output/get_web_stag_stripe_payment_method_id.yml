@@ -1,0 +1,35 @@
+- test:
+    name: testcases/api_output/get_web_stag_stripe_payment_method_id.yml
+    base_url: https://api.stripe.com
+    request:
+      url: /v1/payment_methods
+      method: POST
+      headers:
+        Accept: application/json
+        Content-Type: application/x-www-form-urlencoded
+        Origin: https://js.stripe.com
+        Referer: https://js.stripe.com/v3/controller-571ee0243997a1bf06218df88a6d7f84.html
+        User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36
+      data:
+        type: card
+        billing_details[address][city]: Singapore
+        billing_details[address][country]: Singapore
+        billing_details[address][line1]: Toa Payoh North
+        billing_details[address][postal_code]: 318996
+        billing_details[email]: alex.castlery@gmail.com
+        billing_details[name]: alex himmel
+        billing_details[phone]: 86866868
+        card[number]: 4242424242424242
+        card[cvc]: 111
+        card[exp_month]: 08
+        card[exp_year]: 28
+        guid: 1b1dbd97-88d0-4c99-bcb8-1a45f5f7fccd
+        muid: 797aba23-30e8-4079-916d-6b152df5d162
+        sid: b39f433b-cdbf-42cd-b2ad-467670f45e50
+        payment_user_agent: stripe.js/0702fe39; stripe-js-v3/0702fe39
+        referrer: https://stag.castlery.com/checkout/payment
+        key: ${ENV(public_api_key)}
+    validate:
+      - eq: ["status_code", 200]
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

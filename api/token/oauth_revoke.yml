@@ -1,0 +1,7 @@
+- api:
+    def: api_oauth_revoke_POST()
+    request:
+      url: /api/oauth/revoke
+      method: POST
+      json:
+        token: $access_token

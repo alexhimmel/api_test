@@ -1,0 +1,26 @@
+- test:
+    name: testcases/api_output/get_web_stag_token.yml
+    testcase: testcases/api_output/get_web_stag_token.yml
+    output:
+      - access_token_sg_stag
+
+- test:
+    name: testcases/api_output/get_web_stag_review_id.yml
+    base_url: ${ENV(sg_stag)}
+    request:
+      url: api/reviews
+      method: GET
+      headers:
+        x-channel: web
+        x-access-token: $access_token_sg_stag
+      json:
+        user_id: ${ENV(user_id_stag)}
+        per_page: 50
+    extract:
+      review_id: content.results.0.id
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

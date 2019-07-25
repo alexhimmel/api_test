@@ -1,0 +1,9 @@
+- api:
+    def: api_search_autocomplete_GET()
+    request:
+      url: /api/autocomplete
+      method: GET
+      headers:
+        x-channel: web
+      params:
+        q: $search_q

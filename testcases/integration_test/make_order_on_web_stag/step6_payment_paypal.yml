@@ -1,0 +1,253 @@
+- test:
+    name: get_braintree_client_tokens
+    base_url: ${ENV(base_url_sg_stag)}
+    request:
+      url: /api/braintree_client_tokens
+      method: POST
+      headers:
+        x-channel: web
+        x-access-token: $access_token_sg_stag
+    extract:
+      braintree_client_token: content.client_token
+      braintree_payment_method_id: content.payment_method_id
+    validate:
+      - eq: ["status_code", 201]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}
+
+- test:
+    name: payment_options
+    base_url: https://payments.sandbox.braintree-api.com
+    request:
+      url: /graphql
+      method: OPTIONS
+      headers:
+        Access-Control-Request-Headers: authorization,braintree-version,content-type
+        Access-Control-Request-Method: POST
+        Origin: https://stag.castlery.com
+        Referer: https://stag.castlery.com/checkout/payment
+        User-Agent: ${ENV(user_agent_stag)}
+    validate:
+      - eq: ["status_code", 200]
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}
+
+- test:
+    name: braintree_payment_post
+    base_url: https://payments.sandbox.braintree-api.com
+    request:
+      url: /graphql
+      method: POST
+      headers:
+        Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NiIsImtpZCI6IjIwMTgwNDI2MTYtc2FuZGJveCJ9.eyJleHAiOjE1NjAyMzY4MTgsImp0aSI6IjFmYzUyM2Q4LWZlNmEtNGE2OS1iNWViLTJjMzA2ZjM1MjlkZiIsInN1YiI6Ijg0d2NuMzdzdHFia3BtNXIiLCJpc3MiOiJBdXRoeSIsIm1lcmNoYW50Ijp7InB1YmxpY19pZCI6Ijg0d2NuMzdzdHFia3BtNXIiLCJ2ZXJpZnlfY2FyZF9ieV9kZWZhdWx0IjpmYWxzZX0sInJpZ2h0cyI6WyJtYW5hZ2VfdmF1bHQiXSwib3B0aW9ucyI6e319.0hsyEjElMw3XSaKfNPVQLJtIdN0ZFyIvQviKwQhgqNMz742ICsaSHI32l7Fp1A8lo7mjCI2YGmZ9DHWsFO1ltw
+        Braintree-Version: "2018-05-10"
+        Content-Type: application/json
+        Origin: https://stag.castlery.com
+        Referer: https://stag.castlery.com/checkout/payment
+        User-Agent: ${ENV(user_agent_stag)}
+      json:
+        clientSdkMetadata:
+          integration: custom
+          sessionId: d14c3826-b280-4340-8db4-7d58d16a8b9b
+          source: client
+        operationName: ClientConfiguration
+        query: ""
+    validate:
+      - eq: ["status_code", 200]
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}
+
+- test:
+    name: create_payment_source_post
+    base_url: https://api.sandbox.braintreegateway.com
+    request:
+      url: /merchants/${ENV(braintree_merchantId)}/client_api/v1/paypal_hermes/create_payment_resource
+      method: POST
+      headers:
+        Content-Type: application/json
+        Origin: https://stag.castlery.com
+        Referer: https://stag.castlery.com/checkout/payment
+        User-Agent: ${ENV(user_agent_stag)}
+      json:
+        amount: $item_total
+        authorizationFingerprint: $braintree_client_token
+        braintreeLibraryVersion: braintree/web/3.43.0
+        cancelUrl: https://checkout.paypal.com/web/3.43.0/html/paypal-cancel-frame.min.html?channel=3b94de6731624154aa5cb33bb60e484e
+        currencyIsoCode: SGD
+        experienceProfile:
+          addressOverride: true
+          brandName: Castlery Pte Ltd
+          noShipping: true
+        offerPaypalCredit: false
+        returnUrl: https://checkout.paypal.com/web/3.43.0/html/paypal-redirect-frame.min.html?channel=3b94de6731624154aa5cb33bb60e484e
+        _meta:
+          integration: custom
+          integrationType: custom
+          merchantAppId: stag.castlery.com
+          platform: web
+          sdkVersion: 3.43.0
+          sessionId: 314fc586-addf-46f6-9a0c-9bd8434cb9cd
+          source: client
+    validate:
+      - eq: ["status_code", 201]
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}
+
+- test:
+    name: paypal_account_optons
+    base_url: https://api.sandbox.braintreegateway.com
+    request:
+      url: /merchants/84wcn37stqbkpm5r/client_api/v1/payment_methods/paypal_accounts
+      method: OPTIONS
+      headers:
+        Access-Control-Request-Headers: content-type
+        Access-Control-Request-Method: POST
+        Origin: https://stag.castlery.com
+        Referer: https://stag.castlery.com/checkout/payment
+        User-Agent: ${ENV(user_agent_stag)}
+    validate:
+      - eq: ["status_code", 200]
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}
+
+- test:
+    name: paypal_account_post
+    base_url: https://api.sandbox.braintreegateway.com
+    request:
+      url: /merchants/84wcn37stqbkpm5r/client_api/v1/payment_methods/paypal_accounts
+      method: POST
+      headers:
+        Content-Type: application/json
+        Origin: https://stag.castlery.com
+        Referer: https://stag.castlery.com/checkout/payment
+        User-Agent: ${ENV(user_agent_stag)}
+      json:
+        paypalAccount:
+          correlationId: EC-HERMES-SANDBOX-EC-TOKEN
+          options:
+            validate: false
+          paymentToken: HERMES-SANDBOX-PAYMENT-ID
+          payerId: HERMES-SANDBOX-PAYER-ID
+          unilateral: false
+        braintreeLibraryVersion: braintree/web/3.43.0
+        _meta:
+          merchantAppId: stag.castlery.com
+          platform: web
+          sdkVersion: 3.43.0
+          source: client
+          integration: custom
+          integrationType: custom
+          sessionId: 314fc586-addf-46f6-9a0c-9bd8434cb9cd
+        authorizationFingerprint: $braintree_client_token
+    extract:
+      nonce: content.paypalAccounts.0.nonce
+    validate:
+      - eq: ["status_code", 200]
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}
+
+- test:
+    name: origin_analytics
+    base_url: https://origin-analytics-sand.sandbox.braintree-api.com
+    request:
+      url: /84wcn37stqbkpm5r
+      method: OPTIONS
+      headers:
+        headers:
+        Access-Control-Request-Headers: content-type
+        Access-Control-Request-Method: POST
+        Origin: https://stag.castlery.com
+        Referer: https://stag.castlery.com/checkout/payment
+        User-Agent: ${ENV(user_agent_stag)}
+    validate:
+      - eq: ["status_code", 200]
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}
+
+- test:
+    name: payment_put
+    base_url: ${ENV(base_url_sg_stag)}
+    request:
+      url: /api/checkouts/$order_number_sg_stag/payment
+      method: PUT
+      headers:
+        x-channel: web
+        x-access-token: $access_token_sg_stag
+      json:
+        bill_address_attributes:
+          id: $address_id
+          firstname: $address_firstname
+          lastname: $address_lastname
+          address1: $address_address1
+          phone: $address_phone
+          zipcode: $address_zipcode
+          city: $address_city
+          street: $address_street
+          street_number: $address_street_number
+          level: $address_level
+          flat: $address_flat
+          is_company: $address_is_company
+          country: $address_country
+        payments_attributes:
+          payment_method_id: 2
+          payment_method_nonce: $nonce
+          source_attributes:
+            name: alex himmel
+            payment_instrument_type: Paypal
+    validate:
+      - eq: ["status_code", 201]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}
+
+- test:
+    name: origin_analytic_before_complete_post
+    base_url: https://origin-analytics-sand.sandbox.braintree-api.com
+    request:
+      url: /84wcn37stqbkpm5r
+      method: POST
+      headers:
+        headers:
+        Access-Control-Request-Headers: content-type
+        Access-Control-Request-Method: POST
+        Origin: https://stag.castlery.com
+        Referer: https://stag.castlery.com/checkout/payment
+        User-Agent: ${ENV(user_agent_stag)}
+      json:
+        analytics:
+          - kind: web.paypal.tokenization.success
+          - isAsync: false
+          - timestamp: 1560235580
+        braintreeLibraryVersion: braintree/web/3.43.0
+        _meta:
+          merchantAppId: stag.castlery.com
+          platform: web
+          sdkVersion: 3.43.0
+          source: client
+          integration: custom
+          integrationType: custom
+          sessionId: abf845c5-8633-46ff-a097-657f3dfa8366
+        authorizationFingerprint: eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NiIsImtpZCI6IjIwMTgwNDI2MTYtc2FuZGJveCJ9.eyJleHAiOjE1NjAzMjAyNDIsImp0aSI6ImU1MGEyZjliLTg2ZmUtNDQ3Ni1hNmNlLTIyMTgwZDA0ODMyMCIsInN1YiI6Ijg0d2NuMzdzdHFia3BtNXIiLCJpc3MiOiJBdXRoeSIsIm1lcmNoYW50Ijp7InB1YmxpY19pZCI6Ijg0d2NuMzdzdHFia3BtNXIiLCJ2ZXJpZnlfY2FyZF9ieV9kZWZhdWx0IjpmYWxzZX0sInJpZ2h0cyI6WyJtYW5hZ2VfdmF1bHQiXSwib3B0aW9ucyI6e319.NjYuaADTLXmNd541nUBgdxHtAb20CKhrPQUrLzADJAt6bQKodgEO02Wut6D_cepBppGMgRmj9hzh7djnCggo7A
+    validate:
+      - eq: ["status_code", 200]
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}
+
+- test:
+    name: /api/checkouts/$order_number_sg_stag/complete
+    base_url: ${ENV(base_url_sg_stag)}
+    request:
+      url: /api/checkouts/R927663107/complete
+      method: PUT
+      headers:
+        x-channel: web
+        x-access-token: $access_token_sg_stag
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

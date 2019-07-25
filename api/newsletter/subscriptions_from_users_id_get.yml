@@ -1,0 +1,8 @@
+- api:
+    def: api_users_{id}_subscriptions_GET()
+    request:
+      url: /api/users/me/subscriptions
+      method: GET
+      headers:
+        x-access-token: $access_token
+        x-channel: web

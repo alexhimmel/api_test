@@ -1,0 +1,7 @@
+- api:
+    def: api_checkouts_guest_POST()
+    request:
+      url: /api/checkouts
+      method: POST
+      headers:
+        x-channel: web

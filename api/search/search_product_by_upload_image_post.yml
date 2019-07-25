@@ -1,0 +1,8 @@
+- api:
+    def: api_search_product_by_upload_image_POST()
+    request:
+      url: /api/search/product/by_upload_image
+      method: POST
+      headers:
+        Content-Type: ${multipart_content_type($multipart_encoder)}
+      data: $multipart_encoder

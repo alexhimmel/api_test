@@ -1,0 +1,16 @@
+- test:
+    name: testcases/api_output/get_web_stag_token.yml
+    testcase: testcases/api_output/get_web_stag_token.yml
+    output:
+      - access_token_sg_stag
+
+- test:
+    name: testcases/basic_api_test/review/test_reviews_id_put.yml
+    base_url: ${ENV(sg_stag)}
+    api: api_reviews_id_PUT()
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

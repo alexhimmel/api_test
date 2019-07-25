@@ -1,0 +1,8 @@
+config:
+    name: test data driven
+
+testcases:
+  get city with $cities:
+    testcase: testcases/basic_api_test/address/test_cities_get.yml
+    parameters:
+      cities: ${P(data/cities.csv)}

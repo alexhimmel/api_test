@@ -1,0 +1,16 @@
+- api:
+    def: api_contacts_POST()
+    request:
+      url: /api/contacts
+      method: POST
+      headers:
+        x-channel: web
+        x-access-token: $access_token
+        user-agent: ${ENV(user_agent_api_test)}
+        cookie: ${ENV(cookie_api_test)}
+      json:
+        comment: test msg
+        email: ${ENV(email_api_test)}
+        name: ${ENV(first_name)}
+        phone_number: ${create_random_phone_number()}
+        recaptcha_response: 03AOLTBLSUWz8M4PGYA3quUYXGvlMXx-ZU1AIryxv5-QRQoNWS7p4T-zfx2AvAgNswAcvp9MyEJxzf9V6nD9ks2PSqPxRkg8Pb5-y8532zUcMG6QxSZD9kDz9xYcNIsATtEO74sCZ4shPc_4I9NgXpe-JcidEBfp4DNLH0CZgRRR-BT-I6lItgLNfWKk8I0QkWeVHkdwlRIcAfc3DLEFHIBxKFjwj2bSMTwnUrKrq_CvgtZlfHsDdpWU6ZcYLs4ZY7rqeC8WaJibfdTbPgBwUJUY4bFGFkUJt_RlQ9NVdHngUTLQrGKOLIvCz4OEQT_Wwbwxc6ZZvsjraX

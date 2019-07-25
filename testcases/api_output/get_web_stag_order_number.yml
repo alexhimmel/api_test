@@ -1,0 +1,25 @@
+- test:
+    name: testcases/api_output/get_web_stag_token.yml
+    testcase: testcases/api_output/get_web_stag_token.yml
+    output:
+      - access_token_sg_stag
+
+- test:
+    name: testcases/api_output/get_web_stag_order_number.yml
+    base_url: ${ENV(base_url_sg_stag)}
+    request:
+      url: /api/checkouts
+      method: POST
+      headers:
+        x-channel: web
+        x-access-token: $access_token_sg_stag
+    validate:
+      - eq: ["status_code", 201]
+    extract:
+      order_number_sg_stag: content.number
+      checkout_id: content.id
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}
+

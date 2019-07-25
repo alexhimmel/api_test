@@ -1,0 +1,25 @@
+- test:
+    name: get_user_list
+    testcase: testcases/basic_api_test/casehub/test_get_users.yml
+    output:
+      - user_id
+
+- test:
+    name: test_edit_user
+    base_url: ${ENV(casehub_stag)}
+    request:
+      url: /api/users/$user_id
+      method: PUT
+      headers:
+        authorization: ${get_casehub_login_authorization()}
+        cookie: ${get_casehub_login_cookie()}
+        country: sg
+      json:
+        email: ${create_random_email()}
+        id: $user_id
+        name: ${create_random_string()}
+        roles: operator,admin
+    validate:
+      - eq: ["status_code", 200]
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

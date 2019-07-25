@@ -1,0 +1,6 @@
+- api:
+    def: api_blogs_GET()
+    request:
+      url: /api/blogs
+      method: GET
+

@@ -1,0 +1,7 @@
+- api:
+    def: api_checkouts_payment_methods_GET()
+    request:
+      url: /api/payment_methods
+      method: GET
+      headers:
+        x-channel: web

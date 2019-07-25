@@ -1,0 +1,10 @@
+- api:
+    def: api_feedbacks_POST()
+    request:
+      url: /api/feedbacks
+      method: POST
+      json:
+        feedback_tpye: issue_report
+        content: test123
+        images: []
+        device_info: iphone

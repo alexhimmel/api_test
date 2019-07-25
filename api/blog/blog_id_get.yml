@@ -1,0 +1,5 @@
+- api:
+    def: api_blogs_id_GET()
+    request:
+      url: /api/blogs/$blog_id
+      method: GET

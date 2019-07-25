@@ -1,0 +1,5 @@
+- api:
+    def: api_studio_products_GET()
+    request:
+      url: /api/studio/products
+      method: GET

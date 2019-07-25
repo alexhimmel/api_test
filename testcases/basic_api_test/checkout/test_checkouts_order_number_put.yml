@@ -1,0 +1,24 @@
+- test:
+    name: testcases/basic_api_test/token/test_oauth_token_post.yml
+    testcase: testcases/basic_api_test/token/test_oauth_token_post.yml
+    output:
+      - access_token
+
+- test:
+    name: testcases/basic_api_test/checkout/test_checkouts_post.yml
+    testcase: testcases/basic_api_test/checkout/test_checkouts_post.yml
+    output:
+      - order_number
+
+- test:
+    name: testcases/basic_api_test/checkout/test_checkouts_order_number_put.yml
+    base_url: ${ENV(sg_stag)}
+    variables:
+      - city: Singapore
+    api: api_checkouts_order_number_PUT()
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

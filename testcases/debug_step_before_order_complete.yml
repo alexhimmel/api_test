@@ -1,0 +1,328 @@
+- test:
+    name: get_access_token_sg_stag
+    testcase: testcases/api_output/get_web_stag_token.yml
+    output:
+      - access_token_sg_stag
+
+- test:
+    name: get_user_me
+    base_url: ${ENV(base_url_sg_stag)}
+    request:
+      url: /api/users/me
+      method: GET
+      headers:
+        x-channel: web
+        x-access-token: $access_token_sg_stag
+    extract:
+      user_id_sg_stag: content.id
+      user_hash_sg_stag: content.user_hash
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}
+
+- test:
+    name: checkout_post
+    base_url: ${ENV(base_url_sg_stag)}
+    request:
+      url: /api/checkouts
+      method: POST
+      headers:
+        x-channel: web
+        x-access-token: $access_token_sg_stag
+    extract:
+      order_number_sg_stag: content.number
+    validate:
+      - eq: ["status_code", 201]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}
+
+- test:
+    name: search_product_with_autocomplete
+    base_url: ${ENV(base_url_sg_stag)}
+    request:
+      url: /api/autocomplete
+      method: GET
+      headers:
+        x-channel: web
+        x-access-token: $access_token_sg_stag
+      json:
+        q: capella
+    extract:
+      product_slug: content.1.slug
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}
+
+- test:
+    name: selected_product_leadtime_and_shipping_fee
+    base_url: ${ENV(base_url_sg_stag)}
+    request:
+      url: /api/estimates/leadtime_shipping_fee
+      method: POST
+      headers:
+        x-channel: web
+        x-access-token: $access_token_sg_stag
+      json:
+        city: Singapore
+        quantity: 1
+        variant_id: 13356
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}
+
+- test:
+    name: put_checkout_order_number
+    base_url: ${ENV(base_url_sg_stag)}
+    request:
+      url: /api/checkouts/$order_number_sg_stag
+      method: PUT
+      headers:
+        x-channel: web
+        x-access-token: $access_token_sg_stag
+      json:
+        city: Singapore
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}
+
+- test:
+    name: test_get_web_stag_order_add_line_items
+    base_url: ${ENV(base_url_sg_stag)}
+    request:
+      url: /api/checkouts/$order_number_sg_stag/line_items
+      method: POST
+      headers:
+        x-channel: web
+        x-access-token: $access_token_sg_stag
+      json:
+        quantity: 1
+        variant_id: 13356
+    validate:
+      - eq: ["status_code", 201]
+    extract:
+      product_id_sg_stag: content.line_items.0.variant.product_id
+      variant_id_sg_stag: content.line_items.0.variant.id
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}
+
+- test:
+    name: checkout_registration_put
+    base_url: ${ENV(base_url_sg_stag)}
+    request:
+      url: /api/checkouts/$order_number_sg_stag/registration
+      method: PUT
+      headers:
+        x-channel: web
+        x-access-token: $access_token_sg_stag
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}
+
+- test:
+    name: test_get_web_stag_my_address
+    base_url: ${ENV(base_url_sg_stag)}
+    request:
+      url: /api/users/me/addresses
+      method: GET
+      headers:
+        x-channel: web
+        x-access-token: $access_token_sg_stag
+    extract:
+      address_address1: content.0.address1
+      address_city: content.0.city
+      address_country: content.0.country
+      address_firstname: content.0.firstname
+      address_flat: content.0.flat
+      address_id: content.0.id
+      address_is_company: content.0.is_company
+      address_lastname: content.0.lastname
+      address_level: content.0.level
+      address_phone: content.0.phone
+      address_street: content.0.street
+      address_street_number: content.0.street_number
+      address_zipcode: content.0.zipcode
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}
+
+- test:
+    name: put_address_for_order
+    base_url: ${ENV(base_url_sg_stag)}
+    request:
+      url: /api/checkouts/$order_number_sg_stag/address
+      method: PUT
+      headers:
+        x-channel: web
+        x-access-token: $access_token_sg_stag
+      json:
+        ship_address_attributes:
+          id: $address_id
+          firstname: $address_firstname
+          lastname: $address_lastname
+          address1: $address_address1
+          phone: $address_phone
+          zipcode: $address_zipcode
+          city: $address_city
+          street: $address_street
+          street_number: $address_street_number
+          level: $address_level
+          flat: $address_flat
+          is_company: $address_is_company
+          country: $address_country
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}
+
+- test:
+    name: checkout_put
+    base_url: ${ENV(base_url_sg_stag)}
+    request:
+      url: /api/checkouts/$order_number_sg_stag
+      method: PUT
+      headers:
+        x-channel: web
+        x-access-token: $access_token_sg_stag
+      json:
+        special_instructions: ${create_random_string()}
+    extract:
+      item_total: content.total
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}
+
+- test:
+    name: delivery_put
+    base_url: ${ENV(base_url_sg_stag)}
+    request:
+      url: /api/checkouts/$order_number_sg_stag/delivery
+      method: PUT
+      headers:
+        x-channel: web
+        x-access-token: $access_token_sg_stag
+    validate:
+      - eq: ["status_code", 200]
+    extract:
+      shipment_id: content.shipments.0.id
+      address1: content.ship_address.address1
+      city: content.ship_address.city
+      country: content.ship_address.country
+      first_name: content.ship_address.firstname
+      flat: content.ship_address.flat
+      id: content.ship_address.id
+      is_company: content.ship_address.is_company
+      last_name: content.ship_address.lastname
+      level: content.ship_address.level
+      phone: content.ship_address.phone
+      street: content.ship_address.street
+      street_number: content.ship_address.street_number
+      zipcode: content.ship_address.zipcode
+      email_address: content.email
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}
+
+- test:
+    name: get_stripe_public_key
+    base_url: ${ENV(base_url_sg_stag)}
+    request:
+      url: /api/stripe_public_api_key
+      method: GET
+      headers:
+        x-channel: web
+        x-access-token: $access_token_sg_stag
+    extract:
+      stripe_public_api_key: content.public_api_key
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}
+
+- test:
+    name: payment_methods_stripe
+    base_url: https://api.stripe.com
+    variables:
+      - card_number: ${ENV(stripe_card_number)}
+    request:
+      url: /v1/payment_methods
+      method: POST
+      headers:
+        Accept: application/json
+        Content-Type: application/x-www-form-urlencoded
+        Origin: https://js.stripe.com
+        Referer: https://js.stripe.com/v3/controller-e8b220ab42ded8ff66dee3b65100a776.html
+        User-Agent: ${ENV(user_agent_stag)}
+      data:
+        type: card
+        billing_details[address][city]: $city
+        billing_details[address][country]: SG
+        billing_details[address][line1]: $address1
+        billing_details[address][postal_code]: $zipcode
+        billing_details[email]: $email_address
+        billing_details[name]: $first_name $last_name
+        billing_details[phone]: $phone
+        card[number]: $card_number
+        card[cvc]: 111
+        card[exp_month]: 08
+        card[exp_year]: 28
+        guid: 1b1dbd97-88d0-4c99-bcb8-1a45f5f7fccd
+        muid: 797aba23-30e8-4079-916d-6b152df5d162
+        sid: e38036d4-ae43-4a5c-b51d-1b4d0a534519
+        payment_user_agent: stripe.js/a7fd449c; stripe-js-v3/a7fd449c
+        referrer: https://stag.castlery.com/checkout/payment
+        key: $stripe_public_api_key
+    extract:
+      stripe_payment_id: content.id
+    validate:
+      - eq: ["status_code", 200]
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}
+
+- test:
+    name: stripe_checkout_put
+    base_url: ${ENV(base_url_sg_stag)}
+    request:
+      url: /api/checkouts/$order_number_sg_stag/stripe_checkout
+      method: PUT
+      headers:
+        x-channel: web
+        x-access-token: $access_token_sg_stag
+      json:
+        payment_method_id: $stripe_payment_id
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}
+

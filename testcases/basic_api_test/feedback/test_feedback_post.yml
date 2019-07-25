@@ -1,0 +1,11 @@
+
+- test:
+    name: testcases/basic_api_test/feedback/test_feedback_post.yml
+    base_url: ${ENV(sg_stag)}
+    api: api_feedbacks_POST()
+    validate:
+      - eq: ["status_code", 201]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

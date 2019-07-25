@@ -1,0 +1,19 @@
+- test:
+    name: testcases/api_output/get_pos_order_number.yml
+    testcase: testcases/api_output/get_pos_order_number.yml
+    output:
+      - access_token_pos
+      - pos_order_number
+
+- test:
+    name: testcases/basic_api_test/checkout/test_checkouts_order_number_stripe_checkout_post.yml
+    base_url: ${ENV(sg_pos)}
+    skip: "tested in confirm order put case"
+    variables:
+      - payment_method_id: ${ENV(stripe_payment_id)}
+      - payment_intent_id: ${ENV(stripe_intent_id)}
+    api: api_checkouts_order_stripe_checkout_POST()
+    validate:
+      - eq: ["status_code", 200]
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

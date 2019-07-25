@@ -1,0 +1,20 @@
+- test:
+    name: test_create_new_user
+    base_url: ${ENV(casehub_stag)}
+    request:
+      url: /api/users
+      method: POST
+      headers:
+        authorization: ${get_casehub_login_authorization()}
+        cookie: ${get_casehub_login_cookie()}
+        country: sg
+      json:
+        email: ${create_random_email()}
+        name: ${create_random_string()}
+        roles: operator,admin
+    extract:
+      user_id: content.id
+    validate:
+      - eq: ["status_code", 200]
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

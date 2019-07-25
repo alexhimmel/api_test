@@ -1,0 +1,8 @@
+- api:
+    def: api_pos_checkouts_order_number_payments_GET()
+    request:
+      url: /api/checkouts/$pos_order_number/payments
+      method: GET
+      headers:
+        x-channel: pos
+        x-access-token: $access_token_pos

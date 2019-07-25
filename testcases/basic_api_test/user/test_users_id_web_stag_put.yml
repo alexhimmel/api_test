@@ -1,0 +1,16 @@
+- test:
+    name: testcases/api_output/get_web_new_user_token_id_on_sg_stag.yml
+    testcase: testcases/api_output/get_web_new_user_token_id_on_sg_stag.yml
+    output:
+      - new_user_access_token
+
+- test:
+    name: testcases/basic_api_test/user/test_users_id_web_stag_put.yml
+    base_url: ${ENV(sg_stag)}
+    api: api_pos_users_id_PUT()
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

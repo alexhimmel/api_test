@@ -1,0 +1,12 @@
+- test:
+    name: testcases/basic_api_test/swatches/test_swatches_products_id_swatches_get.yml
+    base_url: ${ENV(sg_stag)}
+    variables:
+      - product_id: ${ENV(product_id_swatch)}
+    api: api_products_id_swatch_GET()
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

@@ -1,0 +1,7 @@
+- api:
+    def: api_variants_GET()
+    request:
+      url: /api/variants
+      method: GET
+      params:
+        ids: $variant_id

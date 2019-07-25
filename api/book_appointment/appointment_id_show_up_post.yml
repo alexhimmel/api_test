@@ -1,0 +1,10 @@
+- api:
+    def: api_appointments_id_show_up_POST()
+    request:
+      url: /api/appointments/$appointment_id/show_up
+      method: POST
+      headers:
+        x-channel: web
+        x-access-token: $access_token
+      params:
+        phone_number: ${ENV(phone_number)}

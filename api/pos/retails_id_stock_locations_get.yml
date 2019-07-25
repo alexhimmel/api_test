@@ -1,0 +1,8 @@
+- api:
+    def: api_pos_retails_id_stock_locations_GET()
+    request:
+      url: /api/retails/${ENV(retails_id)}/stock_locations
+      method: GET
+      headers:
+        x-channel: pos
+        x-access-token: $access_token_pos

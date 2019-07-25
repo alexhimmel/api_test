@@ -1,0 +1,10 @@
+- api:
+    def: api_checkouts_order_number_coupon_DELETE()
+    request:
+      url: /api/checkouts/$guest_order_number/coupon
+      method: DELETE
+      headers:
+        x-channle: web
+        x-spree-order-token: $guest_token
+      json:
+        coupon_code: ${ENV(test_coupon)}

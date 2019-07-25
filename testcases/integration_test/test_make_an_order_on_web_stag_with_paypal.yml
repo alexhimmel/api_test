@@ -1,0 +1,31 @@
+- test:
+    name: step1 testcases/integration_test/make_order_on_web_stag/step1_login_account.yml
+    testcase: testcases/integration_test/make_order_on_web_stag/step1_login_account.yml
+    output:
+      - access_token_sg_stag
+      - order_number_sg_stag
+
+- test:
+    name: step2 testcases/integration_test/make_order_on_web_stag/step2_search_product.yml
+    testcase: testcases/integration_test/make_order_on_web_stag/step2_search_product.yml
+
+- test:
+    name: step3 testcases/integration_test/make_order_on_web_stag/step3_add_to_cart.yml
+    testcase: testcases/integration_test/make_order_on_web_stag/step3_add_to_cart.yml
+    output:
+      - product_id_sg_stag
+      - variant_id_sg_stag
+
+- test:
+    name: step4 testcases/integration_test/make_order_on_web_stag/step4_click_checkout.yml
+    testcase: testcases/integration_test/make_order_on_web_stag/step4_click_checkout.yml
+
+- test:
+    name: step5 testcases/integration_test/make_order_on_web_stag/step5_shipment_and_delivery.yml
+    testcase: testcases/integration_test/make_order_on_web_stag/step5_shipment_and_delivery.yml
+    output:
+      - item_total
+
+- test:
+    name: step6 testcases/integration_test/make_order_on_web_stag/step6_payment_paypal.yml
+    testcase: testcases/integration_test/make_order_on_web_stag/step6_payment_paypal.yml

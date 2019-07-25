@@ -1,0 +1,6 @@
+- api:
+    def: api_swatch_GET()
+    request:
+      url: /api/swatches
+      method: GET
+

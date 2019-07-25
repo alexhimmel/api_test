@@ -1,0 +1,10 @@
+- api:
+    def: api_pos_users_id_addresses_DELETE()
+    request:
+      url: /api/users/$new_user_idid/addresses
+      method: DELETE
+      headers:
+        x-channel: pos
+        x-access-token: $access_token_pos
+      json:
+        address_id: $address_id

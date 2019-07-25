@@ -1,0 +1,5 @@
+- api:
+    def: api_product_reviews_GET()
+    request:
+      url: /api/product_reviews
+      method: GET

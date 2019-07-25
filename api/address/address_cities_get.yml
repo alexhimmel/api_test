@@ -1,0 +1,7 @@
+- api:
+    def: api_cities_GET()
+    request:
+      url: /api/cities
+      method: GET
+      params:
+        q: $cities

@@ -1,0 +1,8 @@
+- api:
+    def: api_checkouts_order_hoolah_pay_checkout_POST()
+    request:
+      url: /api/checkouts/$order_number_sg_stag/hoolah_pay_checkout
+      method: POST
+      headers:
+        x-channel: web
+        x-access-token: $access_token_sg_stag

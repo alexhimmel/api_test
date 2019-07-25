@@ -1,0 +1,11 @@
+- api:
+    def: api_retails_id_inventory_POST()
+    request:
+      url: /api/retails/${ENV(retails_store_id)}/inventory
+      method: POST
+      headers:
+        x-channel: pos
+        x-access-token: $access_token_pos
+      json:
+        product_id: ${ENV(line_item_id)}
+        variant_id: ${ENV(variant_id_01)}

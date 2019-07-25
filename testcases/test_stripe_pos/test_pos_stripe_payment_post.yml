@@ -1,0 +1,39 @@
+- test:
+    name: get_pos_token
+    testcase: testcases/api_output/get_pos_token.yml
+    output:
+      - access_token_pos
+
+- test:
+    name: get_pos_order_number
+    testcase: testcases/api_output/get_pos_order_number.yml
+    output:
+      - pos_order_number
+
+- test:
+    name: post_pos_payment
+    base_url: ${ENV(base_url_pos_sg)}
+    request:
+      url: /api/checkouts/$pos_order_number/payments
+      method: POST
+      headers:
+        Content-Type: application/json
+        Accept-Encoding: deflate, gzip;q=1.0, *;q=0.5
+        x-channel: pos
+        x-access-token: $access_token_pos
+      json:
+        payments_attributes:
+          payment_method_id: 17
+          amount: 899
+          source_attributes:
+            card_brand: VISA
+            card_entry_method: CONTACTLESS
+            expiration_date: 12/2022
+            masked_pan: 405551******9969
+            payment_intent_id: pi_1EaH2yDbGX8mMPedEQJ2Pn7a
+            payment_type: Stripe
+            remarks: ""
+    validate:
+      - eq: ["status_code", 201]
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

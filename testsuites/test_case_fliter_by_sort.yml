@@ -1,0 +1,8 @@
+config:
+    name: test data driven
+
+testcases:
+  get sort with $sort:
+    testcase: testcases/basic_api_test/casehub/test_case_fliter_by_sort.yml
+    parameters:
+      - sort: ["id", "id desc"]

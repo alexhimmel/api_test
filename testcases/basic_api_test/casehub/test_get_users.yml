@@ -1,0 +1,19 @@
+- test:
+    name: get_users
+    base_url: ${ENV(casehub_stag)}
+    request:
+      url: /api/users
+      method: GET
+      headers:
+        authorization: ${get_casehub_login_authorization()}
+        cookie: ${get_casehub_login_cookie()}
+        country: sg
+      params:
+        page: 1
+        limit: 20
+    extract:
+      user_id: content.items.0.id
+    validate:
+      - eq: ["status_code", 200]
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

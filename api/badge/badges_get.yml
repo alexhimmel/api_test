@@ -1,0 +1,11 @@
+- api:
+    def: api_badges_GET()
+    request:
+        url: /api/badges
+        method: GET
+        headers:
+          x-channel: web
+          location_zipcode: ${ENV(zipcode_sg)}
+        params:
+          variant_ids[]: 8609
+          variant_ids[]: 8019

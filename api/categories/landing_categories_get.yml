@@ -1,0 +1,5 @@
+- api:
+    def: api_landing_categories_GET()
+    request:
+      url: /api/landing_categories
+      method: GET

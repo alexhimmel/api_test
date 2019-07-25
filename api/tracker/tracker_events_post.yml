@@ -1,0 +1,18 @@
+- api:
+    def: api_tracker_events_POST()
+    request:
+      url: /api/tracker_events
+      method: POST
+      json:
+        ga_name: string
+        ga_tracking_id: string
+        ga_user_id: string
+        ga_client_id: string
+        ga_gid: string
+        ga_screen_resolution: string
+        ga_page: string
+        event_type: string
+        event_value: string
+        user_id: 0
+        email: string
+        order_id: 0

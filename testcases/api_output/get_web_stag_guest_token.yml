@@ -1,0 +1,16 @@
+- test:
+    name: testcases/api_output/get_web_stag_guest_token.yml
+    base_url: ${ENV(sg_stag)}
+    request:
+      url: api/checkouts
+      method: POST
+      headers:
+        x-channel: web
+    extract:
+      guest_token_sg_stag: content.guest_token
+    validate:
+      - eq: ["status_code", 201]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

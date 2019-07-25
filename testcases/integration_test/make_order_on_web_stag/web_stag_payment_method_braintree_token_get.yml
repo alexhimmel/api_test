@@ -1,0 +1,15 @@
+- test:
+    name: get_braintree_client_tokens
+    base_url: ${ENV(base_url_sg_stag)}
+    request:
+      url: /api/braintree_client_tokens
+      method: POST
+      headers:
+        x-channel: web
+    extract:
+      braintree_client_token: content.client_token
+      braintree_payment_method_id: content.payment_method_id
+    validate:
+      - eq: ["status_code", 200]
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

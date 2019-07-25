@@ -1,0 +1,10 @@
+- test:
+    name: testcases/basic_api_test/product/test_product_search_web_post.yml
+    base_url: ${ENV(sg_stag)}
+    api: api_web_products_search_POST()
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

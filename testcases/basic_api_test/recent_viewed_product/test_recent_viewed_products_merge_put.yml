@@ -1,0 +1,16 @@
+- test:
+    name: testcases/basic_api_test/token/test_oauth_token_post.yml
+    testcase: testcases/basic_api_test/token/test_oauth_token_post.yml
+    output:
+      - access_token
+
+- test:
+    name: testcases/basic_api_test/recent_viewed_product/test_recent_viewed_products_merge_put.yml
+    base_url: ${ENV(sg_stag)}
+    api: api_recent_viewed_products_merge_PUT()
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

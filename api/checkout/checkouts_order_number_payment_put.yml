@@ -1,0 +1,41 @@
+- api:
+    def: api_checkouts_order_payment_PUT()
+    request:
+      url: /api/checkouts/$order_number/payment
+      method: PUT
+      headers:
+        x-access-token: $access_token
+      json:
+        payments_attributes:
+          payment_method_id: 0
+          payment_method_nonce:
+          source_attributes:
+            name:
+            payment_instrument_type:
+            last_digits:
+            cc_type:
+            number:
+            ipp_transaction:
+            ipp_period:
+            month:
+            year:
+            encrypted_card_info:
+        bill_address_attributes:
+          firstname:
+          lastname:
+          compnay:
+          phone:
+          alternative_phone:
+          address1:
+          flat:
+          level:
+          street_number:
+          street:
+          zipcode:
+          city:
+          state:
+          building_name:
+          is_manual:
+          is_company:
+        device_data:
+

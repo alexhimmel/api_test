@@ -1,0 +1,8 @@
+- api:
+    def: api_recent_viewed_products_GET()
+    request:
+      url: /api/recent_viewed_products
+      method: GET
+      headers:
+        x-channel: web
+        x-access-token: $access_token

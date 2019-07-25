@@ -1,0 +1,7 @@
+- api:
+    def: api_wish_items_variants_id_GET()
+    request:
+      url: /api/wish_items/$wish_item
+      method: GET
+      headers:
+        x-access-token: $access_token

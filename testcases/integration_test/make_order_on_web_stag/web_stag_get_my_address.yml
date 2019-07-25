@@ -1,0 +1,35 @@
+- test:
+    name: get_access_token_and_order_number_on_web_stag
+    testcase: testcases/api_output/get_web_stag_order_number.yml
+    output:
+      - access_token_sg_stag
+
+- test:
+    name: test_get_web_stag_my_address
+    base_url: ${ENV(base_url_sg_stag)}
+    request:
+      url: /api/users/me/addresses
+      method: GET
+      headers:
+        x-channel: web
+        x-access-token: $access_token_sg_stag
+    extract:
+      address_address1: content.0.address1
+      address_city: content.0.city
+      address_country: content.0.country
+      address_firstname: content.0.firstname
+      address_flat: content.0.flat
+      address_id: content.0.id
+      address_is_company: content.0.is_company
+      address_lastname: content.0.lastname
+      address_level: content.0.level
+      address_phone: content.0.phone
+      address_street: content.0.street
+      address_street_number: content.0.street_number
+      address_zipcode: content.0.zipcode
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

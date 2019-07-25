@@ -1,0 +1,33 @@
+- test:
+    name: get_access_token
+    testcase: testcases/basic_api_test/token/test_oauth_token_post.yml
+    output:
+      - access_token
+
+- test:
+    name: update_cloudinary_image
+    base_url: ${ENV(sg_stag)}
+    variables:
+      - file: ${get_file($file_path)}
+      - file_path: ./files/images/Miles-Chair-angle.jpg
+    request:
+      url: /api/cloudinary_images
+      method: POST
+      headers:
+        referer: https://stag.castlery.com/account/reviews
+        user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36
+        x-access-token: $access_token
+        x-channel: web
+        content-type: multipart/form-data; boundary=----WebKitFormBoundaryG9CEGLPILPc4MLFb
+      data:
+        image[]: (binary)
+        folder: customer_review
+        options: {"use_filename":false,"unique_filename":true}
+      files:
+        file: ["Miles-Chair-angle.jpg",$file,"image/*"]
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

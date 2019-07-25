@@ -1,0 +1,14 @@
+- test:
+    name: testcases/api_output/get_pos_token.yml
+    testcase: testcases/api_output/get_pos_token.yml
+    output:
+      - access_token_pos
+
+- test:
+    name: testcases/basic_api_test/user/test_users_post_pos.yml
+    base_url: ${ENV(sg_pos)}
+    api: api_pos_users_POST()
+    validate:
+      - eq: ["status_code", 201]
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

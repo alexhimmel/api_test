@@ -1,0 +1,11 @@
+- api:
+    def: api_checkouts_order_stripe_checkout_POST()
+    request:
+      url: /api/checkouts/$pos_order_number/stripe_checkout
+      method: POST
+      headers:
+        x-channel: web
+        x-access-token: $access_token_pos
+      json:
+        payment_method_id: $payment_method_id
+        payment_intent_id: $payment_intent_id

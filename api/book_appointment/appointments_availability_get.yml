@@ -1,0 +1,18 @@
+- api:
+    def: api_appointments_availability_GET()
+    request:
+      url: /api/appointments/availability
+      method: GET
+      params:
+        retail_id: ${ENV(retails_id)}
+        date: ${appointment_date()}
+        days: 1
+
+
+
+
+
+
+
+
+

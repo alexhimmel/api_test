@@ -1,0 +1,16 @@
+- api:
+    def: api_appointments_POST()
+    request:
+      url: /api/appointments
+      method: POST
+      headers:
+        x-channel: web
+        x-access-token: $access_token
+      json:
+        appointed_on: ${appointment_date()}
+        firstname: ${ENV(user_first_name)}
+        lastname: ${ENV(user_last_name)}
+        email: ${ENV(user_email)}
+        phone_number: ${ENV(phone_number)}
+        retail_id: ${ENV(retails_id)}
+        event_id: 0

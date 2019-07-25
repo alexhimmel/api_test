@@ -1,0 +1,11 @@
+- api:
+    def: api_wish_items_merge_PUT()
+    request:
+      url: /api/wish_items/merge
+      method: PUT
+      headers:
+        Referer: ${ENV(sg_stag)}
+        x-channel: web
+        User-Agent: ${ENV(user_agent_guest)}
+        x-guest-token: ${ENV(x_guest_token)}
+        x-access-token: $access_token

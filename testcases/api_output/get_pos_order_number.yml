@@ -1,0 +1,29 @@
+- test:
+    name: testcases/api_output/get_pos_token.yml
+    testcase: testcases/api_output/get_pos_token.yml
+    output:
+      - access_token_pos
+
+- test:
+    name: testcases/api_output/get_pos_order_number.yml
+    base_url: ${ENV(sg_pos)}
+    request:
+      url: /api/checkouts
+      method: POST
+      headers:
+        Content-Type: application/json
+        Accept-Encoding: deflate, gzip;q=1.0, *;q=0.5
+        x-channel: pos
+        x-access-token: $access_token_pos
+      json:
+        retail_id: 4
+        sales_user_id: 40
+    extract:
+      pos_order_number: content.number
+      pos_guest_token: content.guest_token
+      pos_chcekout_id: content.id
+      pos_store_id: content.store_id
+    validate:
+      - eq: ["status_code", 201]
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

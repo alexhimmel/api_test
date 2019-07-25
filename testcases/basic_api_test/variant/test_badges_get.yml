@@ -1,0 +1,13 @@
+- test:
+    name: testcases/basic_api_test/variant/test_badges_get.yml
+    base_url: ${ENV(sg_stag)}
+    variables:
+      - badge_variant_01: 20746
+      - badge_variant_02: 20747
+    api: api_variants_badges_GET()
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

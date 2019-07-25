@@ -1,0 +1,27 @@
+- api:
+    def: api_users_id_addresses_POST()
+    request:
+      url: /api/users/me/addresses
+      method: POST
+      headers:
+        x-channel: web
+        x-access_token: $access_token
+      json:
+        alternative_phone: ${create_random_phone_number()}
+        building_name: $building_name
+        company: ${ENV(compnay)}
+        country: Singapore
+        email: ${ENV(user_email)}
+        firstname: ${ENV(user_first_name)}
+        flat: ${create_random_qty()}
+        id: $id
+        is_manual: false
+        lastname: ${ENV(user_last_name)}
+        latitude: $latitude
+        level: ${create_random_qty()}
+        longitude: $longitude
+        phone: ${create_random_phone_number()}
+        street: $street
+        street_number: $street_number
+        user_hash: $user_hash_sg_stag
+        zipcode: ${create_random_zipcode()}

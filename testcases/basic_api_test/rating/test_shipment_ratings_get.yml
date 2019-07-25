@@ -1,0 +1,17 @@
+- test:
+    name: testcases/basic_api_test/user/test_users_id_orders_get.yml
+    testcase: testcases/basic_api_test/user/test_users_id_orders_get.yml
+    output:
+      - access_token
+      - shipment_0_id
+
+- test:
+    name: testcases/basic_api_test/rating/test_shipment_ratings_get.yml
+    base_url: ${ENV(sg_stag)}
+    api: api_shipment_ratings_GET()
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

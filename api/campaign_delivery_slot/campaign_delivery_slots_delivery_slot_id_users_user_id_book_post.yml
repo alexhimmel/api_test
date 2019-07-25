@@ -1,0 +1,5 @@
+- api:
+    def: api_campain_delivery_slots_campaign_delivery_slot_id_users_user_id_book_POST()
+    request:
+      url: /api/campaign_delivery_slots/$campaign_delivery_slot_id/users/${ENV(user_id_sg)}/book
+      method: POST

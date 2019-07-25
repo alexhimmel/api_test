@@ -1,0 +1,14 @@
+- api:
+    def: api_reviews_review_id_message_POST()
+    request:
+      url: /api/reviews/${ENV(review_id)}/messages
+      method: POST
+      headers:
+        x-channel: web
+        x-access-token: $access_token_sg_stag
+      json:
+        parent_message_id: ${ENV(review_message_id)}
+        anonymous: ture
+        content: ${create_random_string()}
+        images: []
+

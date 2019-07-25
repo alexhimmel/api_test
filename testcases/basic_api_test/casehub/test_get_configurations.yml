@@ -1,0 +1,23 @@
+- test:
+    name: test_get_configurations
+    base_url: ${ENV(casehub_stag)}
+    request:
+      url: /api/configurations
+      method: GET
+      headers:
+        authorization: ${get_casehub_login_authorization()}
+        cookie: ${get_casehub_login_cookie()}
+    extract:
+      delivery_team_id: content.delivery_team.0.id
+      delivery_team_name: content.delivery_team.0.name
+      issue_type_id: content.issue_type.0.id
+      issue_type_name: content.issue_type.0.name
+      issue_type_remark: content.issue_type.0.remark
+      resolution_type_id: content.resolution_type.0.id
+      resolution_type_name: content.resolution_type.0.name
+      supplier_id: content.supplier.0.id
+      supplier_code: content.supplier.0.code
+    validate:
+      - eq: ["status_code", 200]
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

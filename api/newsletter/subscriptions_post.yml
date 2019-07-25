@@ -1,0 +1,19 @@
+- api:
+    def: api_subscriptions_POST()
+    request:
+      url: /api/subscriptions
+      method: POST
+      json:
+        email: ${ENV(user_email)}
+      params:
+        access_token: $access_token
+
+
+
+
+
+
+
+
+
+

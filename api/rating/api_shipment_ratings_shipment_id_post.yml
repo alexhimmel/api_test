@@ -1,0 +1,13 @@
+- api:
+    def: api_shipment_ratings_shipment_id_POST()
+    request:
+      url: /api/shipment_ratings/$shipment_0_id
+      method: POST
+      headers:
+        x-channel: web
+        x-access-token: $access_token
+      json:
+        rating_deliver_speed: 1
+        rating_deliveryman: 1
+        rating_casing: 1
+        reason: ${create_random_string()}

@@ -1,0 +1,22 @@
+- api:
+    def: api_users_id_subscriptions_change_to_unsub_PUT()
+    request:
+      url: /api/users/me/subscriptions
+      method: PUT
+      params:
+        access_token: $access_token
+      json:
+        unsubscribe_reason: ""
+        message_groups:
+          - name: promotions
+            subject: Promotions
+            description: Receive news on all upcoming discounts
+            deliver_types: {sms: true, web: false, email: false}
+          - name: new_arrivals
+            subject: New Arrivals
+            description: Get notified about our weekly new arrivals!
+            deliver_types: {sms: true, web: false, email: true}
+          - name: order_updates
+            subject: Order Updates
+            description: Get updates on your orders and returns
+            deliver_types: {sms: false, web: false, email: true}

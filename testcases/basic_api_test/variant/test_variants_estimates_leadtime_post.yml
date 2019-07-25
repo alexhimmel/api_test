@@ -1,0 +1,13 @@
+- test:
+    name: testcases/basic_api_test/variant/test_variants_estimates_leadtime_post.yml
+    base_url: ${ENV(sg_stag)}
+    variables:
+      - product_id: ${ENV(product_id)}
+      - variant_id: ${ENV(variant_id)}
+    api: api_estimates_leadtime_POST()
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

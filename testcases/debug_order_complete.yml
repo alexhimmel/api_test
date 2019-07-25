@@ -1,0 +1,15 @@
+- test:
+    name: checkout_complete
+    base_url: ${ENV(au_stag)}
+    request:
+      url: /api/checkouts/R791110704/complete
+      method: PUT
+      headers:
+        x-channel: web
+        x-access-token: 145cfbdceee74aeb7d1c239ff28d2f05ef988aded71a38df37c5b0eadf652fcc
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

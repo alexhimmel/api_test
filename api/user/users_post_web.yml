@@ -1,0 +1,13 @@
+- api:
+    def: api_web_users_POST()
+    request:
+      url: /api/users
+      method: POST
+      headers:
+        x-channel: web
+      json:
+        email: ${create_random_email()}
+        firstname: ${ENV(first_name)}
+        lastname: ${ENV(last_name)}
+        password: ${create_random_password()}
+        phone: ${create_random_phone_number()}

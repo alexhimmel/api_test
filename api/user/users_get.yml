@@ -1,0 +1,8 @@
+- api:
+    def: api_users_GET()
+    request:
+      url: /api/users
+      method: GET
+      headers:
+        x-channel: pos
+        x-access-token: $access_token_pos

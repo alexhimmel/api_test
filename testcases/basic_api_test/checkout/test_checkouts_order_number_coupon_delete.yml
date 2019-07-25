@@ -1,0 +1,17 @@
+- test:
+    name: testcases/basic_api_test/checkout/test_checkouts_order_number_coupon_post.yml
+    testcase: testcases/basic_api_test/checkout/test_checkouts_order_number_coupon_post.yml
+    output:
+      - guest_order_number
+      - guest_token
+
+- test:
+    name: testcases/basic_api_test/checkout/test_checkouts_order_number_coupon_delete.yml
+    base_url: ${ENV(sg_stag)}
+    api: api_checkouts_order_number_coupon_DELETE()
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

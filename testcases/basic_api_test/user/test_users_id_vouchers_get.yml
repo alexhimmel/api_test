@@ -1,0 +1,16 @@
+- test:
+    name: testcases/api_output/get_token.yml
+    testcase: testcases/api_output/get_token.yml
+    output:
+      - access_token
+
+- test:
+    name: testcases/basic_api_test/user/test_users_id_vouchers_get.yml
+    base_url: ${ENV(sg_stag)}
+    api: api_users_id_vouchers_GET()
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

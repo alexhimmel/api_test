@@ -1,0 +1,16 @@
+- api:
+    def: api_estimates_leadtime_POST()
+    request:
+      url: api/estimates/leadtime
+      method: POST
+      json:
+        product_id: $product_id
+        variant_id: $variant_id
+        quantity: 1
+        options:
+          bundle_options:
+            - bundle_option_id: 0
+            - bundle_option_variant_id: 0
+          customizations:
+            - option_id: 0
+            - value_id: 0

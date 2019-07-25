@@ -1,0 +1,24 @@
+- test:
+    name: testcases/api_output/get_token.yml
+    testcase: testcases/api_output/get_token.yml
+    output:
+      - access_token
+
+- test:
+    name: testcases/api_output/revoke_token.yml
+    base_url: ${ENV(sg_stag)}
+    request:
+      url: /api/oauth/revoke
+      method: POST
+      headers:
+        Content-Type: application/json
+        Accept-Encoding: deflate, gzip;q=1.0, *;q=0.5
+        x-channel: web
+      json:
+        token: $access_token
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

@@ -1,0 +1,24 @@
+- test:
+    name: testcases/basic_api_test/token/test_oauth_token_post.yml
+    testcase: testcases/basic_api_test/token/test_oauth_token_post.yml
+    output:
+      - access_token
+
+- test:
+    name: testcases/basic_api_test/address/test_address_get.yml
+    base_url: ${ENV(sg_stag)}
+    api: api_address_GET()
+    extract:
+      building_name: content.0.building_name
+      address_id: content.0.id
+      latitude: content.0.latitude
+      longitude: content.0.longitude
+      street: content.0.street
+      street_number: content.0.street_number
+      zipcode: content.0.zipcode
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

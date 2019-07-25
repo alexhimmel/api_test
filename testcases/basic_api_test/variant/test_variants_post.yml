@@ -1,0 +1,13 @@
+- test:
+    name: testcases/basic_api_test/variant/test_variants_post.yml
+    base_url: ${ENV(sg_stag)}
+    api: api_variant_POST()
+    variables:
+      - product_id: ${ENV(product_id_swatch)}
+      - variant_id: ${ENV(variant_id)}
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

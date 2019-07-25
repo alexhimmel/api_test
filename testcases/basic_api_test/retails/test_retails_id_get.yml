@@ -1,0 +1,12 @@
+- test:
+    name: testcases/basic_api_test/retails/test_retails_id_get.yml
+    base_url: ${ENV(sg_stag)}
+    variables:
+      - retails_id: ${ENV(retails_id)}
+    api: api_retails_GET()
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

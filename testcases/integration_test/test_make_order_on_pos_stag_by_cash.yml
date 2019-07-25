@@ -1,0 +1,310 @@
+- test:
+    name: testcases/api_output/get_pos_token.yml
+    testcase: testcases/api_output/get_pos_token.yml
+    output:
+      - access_token_pos
+      - refresh_token_pos
+
+- test:
+    name: testcases/integration_test/test_make_order_on_pos_stag_by_cash.yml
+    base_url: ${ENV(base_url_pos_sg)}
+    api: api_pos_users_id_GET()
+    extract:
+      user_id: content.id
+      user_hash: content.user_hash
+    validate:
+      - eq: ["status_code", 200]
+
+- test:
+    name: testcases/integration_test/test_make_order_on_pos_stag_by_cash.yml
+    base_url: ${ENV(base_url_pos_sg)}
+    request:
+      url: /api/checkouts
+      method: POST
+      headers:
+        x-channel: pos
+        x-access-token: $access_token_pos
+    extract:
+      pos_order_number: content.number
+
+- test:
+    name: testcases/integration_test/test_make_order_on_pos_stag_by_cash.yml
+    base_url: ${ENV(base_url_pos_sg)}
+    request:
+      url: /api/autocomplete
+      method: GET
+      headers:
+        x-channel: pos
+        x-access-token: $access_token_pos
+      params:
+        q: ${ENV(search_product_q)}
+        category_max_cnt: 0
+        variant_max_cnt: 6
+    extract:
+      product_slug: content.0.slug
+    validate:
+      - eq: ["status_code", 200]
+
+- test:
+    name: testcases/integration_test/test_make_order_on_pos_stag_by_cash.yml
+    base_url: ${ENV(base_url_pos_sg)}
+    request:
+      url: /api/products/$product_slug
+      method: GET
+      headers:
+        x-channel: pos
+        x-access-token: $access_token_pos
+    extract:
+      product_id: content.id
+      product_price: content.list_price
+      variant_id: content.variants.1.id
+    validate:
+      - eq: ["status_code", 200]
+
+- test:
+    name: testcases/integration_test/test_make_order_on_pos_stag_by_cash.yml
+    base_url: ${ENV(base_url_pos_sg)}
+    request:
+      url: /api/retails/${ENV(retails_id)}/inventory
+      method: POST
+      headers:
+        x-channel: pos
+        x-access-token: $access_token_pos
+      json:
+        variant_id: $variant_id
+    validate:
+      - eq: ["status_code", 200]
+
+- test:
+    name: testcases/integration_test/test_make_order_on_pos_stag_by_cash.yml
+    base_url: ${ENV(base_url_pos_sg)}
+    request:
+      url: /api/estimates/leadtime
+      method: POST
+      headers:
+        x-channel: pos
+        x-access-token: $access_token_pos
+      json:
+        quantity: 1
+        variant_id: $variant_id
+    extract:
+      variant_available_quantity: content.available_quantity
+      variant_lead_time: content.lead_time
+    validate:
+      - eq: ["status_code", 200]
+
+- test:
+    name: testcases/integration_test/test_make_order_on_pos_stag_by_cash.yml
+    base_url: ${ENV(base_url_pos_sg)}
+    request:
+      url: /api/checkouts/$pos_order_number/line_items
+      method: POST
+      headers:
+        x-channel: pos
+        x-access-token: $access_token_pos
+      json:
+        options:
+          preferred_stock_location_id: 1
+        quantity: 1
+        variant_id: $variant_id
+    extract:
+      checkout_id: content.id
+      #line_item_id: content.line_items.id
+    validate:
+      - eq: ["status_code", 201]
+
+- test:
+    name: testcases/integration_test/test_make_order_on_pos_stag_by_cash.yml
+    base_url: ${ENV(base_url_pos_sg)}
+    request:
+      url: /api/users
+      method: GET
+      headers:
+        x-channel: pos
+        x-access-token: $access_token_pos
+      params:
+        per_page: 8
+        q: ${ENV(email_api_test_pos)}
+        page: 1
+    extract:
+      user_id: content.results.0.id
+    validate:
+      - eq: ["status_code", 200]
+
+- test:
+    name: testcases/integration_test/test_make_order_on_pos_stag_by_cash.yml
+    base_url: ${ENV(base_url_pos_sg)}
+    request:
+      url: /api/checkouts/$pos_order_number
+      method: PUT
+      headers:
+        x-channel: pos
+        x-access-token: $access_token_pos
+      json:
+        user_id: $user_id
+
+- test:
+    name: testcases/integration_test/test_make_order_on_pos_stag_by_cash.yml
+    base_url: ${ENV(base_url_pos_sg)}
+    request:
+      url: /api/users/$user_id/addresses
+      method: GET
+      headers:
+        x-channel: pos
+        x-access-token: $access_token_pos
+    extract:
+      address_address1: content.0.address1
+      address_city: content.0.city
+      address_country: content.0.country
+      address_firstname: content.0.firstname
+      address_flat: content.0.flat
+      address_id: content.0.id
+      address_is_company: content.0.is_company
+      address_lastname: content.0.lastname
+      address_level: content.0.level
+      address_phone: content.0.phone
+      address_street: content.0.street
+      address_street_number: content.0.street_number
+      address_zipcode: content.0.zipcode
+    validate:
+      - eq: ["status_code", 200]
+
+- test:
+    name: testcases/integration_test/test_make_order_on_pos_stag_by_cash.yml
+    base_url: ${ENV(base_url_pos_sg)}
+    request:
+      url: /api/checkouts/$pos_order_number/registration
+      method: PUT
+      headers:
+        x-channel: pos
+        x-access-token: $access_token_pos
+    extract:
+      checkout_registration_id: content.id
+    validate:
+     - eq: ["status_code", 200]
+
+- test:
+    name: testcases/integration_test/test_make_order_on_pos_stag_by_cash.yml
+    base_url: ${ENV(base_url_pos_sg)}
+    request:
+      url: /api/checkouts/$pos_order_number/payments
+      method: GET
+      headers:
+        x-channel: pos
+        x-access-token: $access_token_pos
+    validate:
+      - eq: ["status_code", 200]
+
+- test:
+    name: testcases/integration_test/test_make_order_on_pos_stag_by_cash.yml
+    base_url: ${ENV(base_url_pos_sg)}
+    request:
+      url: /api/payment_methods
+      method: GET
+      headers:
+        x-channel: pos
+        x-access-token: $access_token_pos
+    extract:
+      payment_method_cash_id: content.8.id
+    validate:
+      - eq: ["status_code", 200]
+
+- test:
+    name: testcases/integration_test/test_make_order_on_pos_stag_by_cash.yml
+    base_url: ${ENV(base_url_pos_sg)}
+    request:
+      url: /api/checkouts/$pos_order_number/address
+      method: PUT
+      headers:
+        x-channel: pos
+        x-access-token: $access_token_pos
+      json:
+        bill_address_attributes:
+          id: $address_id
+          firstname: $address_firstname
+          lastname: $address_lastname
+          address1: $address_address1
+          phone: $address_phone
+          zipcode: $address_zipcode
+          city: $address_city
+          street: $address_street
+          street_number: $address_street_number
+          level: $address_level
+          flat: $address_flat
+          is_company: $address_is_company
+          country: $address_country
+        ship_address_attributes:
+          id: $address_id
+          firstname: $address_firstname
+          lastname: $address_lastname
+          address1: $address_address1
+          phone: $address_phone
+          zipcode: $address_zipcode
+          city: $address_city
+          street: $address_street
+          street_number: $address_street_number
+          level: $address_level
+          flat: $address_flat
+          is_company: $address_is_company
+          country: $address_country
+    validate:
+      - eq: ["status_code", 200]
+
+- test:
+    name: testcases/integration_test/test_make_order_on_pos_stag_by_cash.yml
+    base_url: ${ENV(base_url_pos_sg)}
+    request:
+      url: /api/checkouts/$pos_order_number/delivery
+      method: PUT
+      headers:
+        x-channel: pos
+        x-access-token: $access_token_pos
+    extract:
+      order_total: content.total
+    validate:
+      - eq: ["status_code", 200]
+
+- test:
+    name: testcases/integration_test/test_make_order_on_pos_stag_by_cash.yml
+    base_url: ${ENV(base_url_pos_sg)}
+    request:
+      url: /api/checkouts/$pos_order_number/payments
+      method: POST
+      headers:
+        x-channel: pos
+        x-access-token: $access_token_pos
+      json:
+        payments_attributes:
+          payment_method_id: $payment_method_cash_id
+          source_attributes:
+            payment_type: Cash
+            remarks: ""
+          amount: $order_total
+    extract:
+      payment_id: content.0.id
+    validate:
+      - eq: ["status_code", 201]
+
+- test:
+    name: testcases/integration_test/test_make_order_on_pos_stag_by_cash.yml
+    base_url: ${ENV(base_url_pos_sg)}
+    request:
+      url: api/checkouts/$pos_order_number/confirm_payments
+      method: PUT
+      headers:
+        x-channel: pos
+        x-access-token: $access_token_pos
+    validate:
+      - eq: ["status_code", 200]
+
+- test:
+    name: testcases/integration_test/test_make_order_on_pos_stag_by_cash.yml
+    base_url: ${ENV(base_url_pos_sg)}
+    request:
+      url: /api/checkouts/$pos_order_number/complete
+      method: PUT
+      headers:
+        x-channel: pos
+        x-access-token: $access_token_pos
+    validate:
+      - eq: ["status_code", 200]

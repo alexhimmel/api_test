@@ -1,0 +1,24 @@
+- test:
+    name: testcases/api_output/get_pos_token.yml
+    base_url: ${ENV(sg_pos)}
+    request:
+      url: /api/oauth/token
+      method: POST
+      headers:
+        Content-Type: application/json
+        Accept-Encoding: deflate, gzip;q=1.0, *;q=0.5
+        x-channel: pos
+      json:
+        grant_type: password
+        username: ${ENV(email_api_test_pos)}
+        password: ${ENV(password_api_test)}
+        refresh_token: ""
+    extract:
+      access_token_pos: content.access_token
+      refresh_token_pos: content.refresh_token
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

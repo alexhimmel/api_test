@@ -1,0 +1,8 @@
+- test:
+    name: testcases/basic_api_test/checkout/test_instalment_options_get.yml
+    base_url: ${ENV(base_url_sg)}
+    api: api_checkouts_instalment_options_GET()
+    validate:
+      - eq: ["status_code", 200]
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

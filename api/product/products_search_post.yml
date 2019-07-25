@@ -1,0 +1,27 @@
+- api:
+    def: api_web_products_search_POST()
+    request:
+      url: /api/products/search
+      method: POST
+      headers:
+        x-channel: web
+      json:
+        page: 1
+        sort_by: lead_time_asc
+        filters:
+          lead_time:
+            - {lte:'22',gte:'7'}
+            - {lte:'7',gte:'0'}
+            - {lte:'43',gte:'22'}
+          name: bambu armchair
+
+
+
+
+
+
+
+
+
+
+

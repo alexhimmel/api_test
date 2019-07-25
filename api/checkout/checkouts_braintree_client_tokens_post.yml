@@ -1,0 +1,7 @@
+- api:
+    def: api_checkouts_braintree_client_tokens_POST()
+    request:
+      url: /api/braintree_client_tokens
+      method: POST
+      headers:
+        x-channel: web

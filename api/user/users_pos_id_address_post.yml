@@ -1,0 +1,25 @@
+- api:
+    def: api_pos_users_id_address_POST()
+    request:
+      url: /api/users/$new_user_id/addresses
+      method: POST
+      headers:
+        x-channel: pos
+        x-access-token: $access_token_pos
+      json:
+        firstname: ${ENV(first_name)}
+        lastname: ${ENV(last_name)}
+        compnay: ${ENV(compnay)}
+        phone: ${create_random_phone_number()}
+        alternative_phone: ${create_random_phone_number()}
+        address1: ${create_random_string()}
+        flat: 18
+        level: 8
+        street_number: 66
+        street: ${create_random_string()}
+        zipcode: 100866
+        city: Singapore
+        state: singapore
+        building_name: ${create_random_string()}
+        is_manual: true
+        is_company: true

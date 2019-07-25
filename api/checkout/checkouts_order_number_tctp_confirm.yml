@@ -1,0 +1,17 @@
+- api:
+    def: api_checkouts_order_tctp_confirm_PUT()
+    request:
+      url: /api/checkouts/$order_number/tctp_confirm
+      method: PUT
+      headers:
+        x-channel: web
+        x-access-token: $access_token
+      json:
+        tctp-attributes:
+          encrypted_card_info: 453257XXXXXX8612
+          masked_card_info: 00acgkZ8ExGW17aR/R3ciioXZZw4sseI5z31sYM16d3bwV7jCKBpV3i5mHCp6CfuhdyE2KI6JGDls+ADuwUZ06ilU0ZaDUsMEv8bKnb/2B+w15PxZO9XV3hvb8o+uIXqsGRAN0fO+BfOuTzvQPzN0O0UaUf00n7rDsb9tc6IJ0snfCQ=U2FsdGVkX187dSwIJcMGcZliIwsG4EL6UL8+2g6YHJT5Q3+qi0fZJaa5EWnrC/f9
+          exp_month_card_info: 09
+          exp_year_card_info: 2029
+          ipp_period: 12
+          bank_name: OCBC
+

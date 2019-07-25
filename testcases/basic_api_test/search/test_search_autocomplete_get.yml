@@ -1,0 +1,14 @@
+- test:
+    name: testcases/basic_api_test/search/test_search_autocomplete_get.yml
+    variables:
+     - search_q: ${random_alphabet()}
+    base_url: ${ENV(sg_stag)}
+    api: api_search_autocomplete_GET()
+    extract:
+      slug: content.0.slug
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

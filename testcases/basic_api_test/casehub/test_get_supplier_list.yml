@@ -1,0 +1,22 @@
+- test:
+    name: test_get_supplier_list
+    base_url: ${ENV(casehub_stag)}
+    request:
+      url: /api/configurations/supplier
+      method: GET
+      headers:
+        authorization: ${get_casehub_login_authorization()}
+        cookie: ${get_casehub_login_cookie()}
+        country: sg
+      json:
+        page: 1
+        limit: 10
+    extract:
+      supplier_name: content.items.0.code
+      spplier_created_at: content.items.0.created_at
+      spplier_id: content.items.0.id
+      supplier_updated_at: content.items.0.updated_at
+    validate:
+      - eq: ["status_code", 200]
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

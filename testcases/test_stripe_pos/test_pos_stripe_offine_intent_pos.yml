@@ -1,0 +1,30 @@
+- test:
+    name: get_pos_token
+    testcase: testcases/api_output/get_pos_token.yml
+    output:
+      - access_token_pos
+
+- test:
+    name: get_pos_order_number
+    testcase: testcases/api_output/get_pos_order_number.yml
+    output:
+      - pos_order_number
+
+
+- test:
+    name: pos_stripe_offine_intent_post
+    base_url: ${ENV(base_url_pos_sg)}
+    request:
+      url: /api/checkouts/$pos_order_number/stripe_offline_intent
+      method: POST
+      headers:
+        Content-Type: application/json
+        Accept-Encoding: deflate, gzip;q=1.0, *;q=0.5
+        x-channel: pos
+        x-access-token: $access_token_pos
+      json:
+        amount: 899
+    validate:
+      - eq: ["status_code", 200]
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

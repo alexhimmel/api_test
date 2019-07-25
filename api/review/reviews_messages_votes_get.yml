@@ -1,0 +1,11 @@
+- api:
+    def: api_review_message_votes_GET()
+    request:
+      url: /api/review_message_votes
+      method: GET
+      headers:
+        x-channel: web
+        x-access-token: $access_token_sg_stag
+      params:
+        review_id: ${ENV(review_id)}
+        review_message_ids: ${ENV(review_message_id)}

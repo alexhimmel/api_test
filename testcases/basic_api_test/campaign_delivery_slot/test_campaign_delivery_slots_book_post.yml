@@ -1,0 +1,14 @@
+- test:
+    name: testcases/basic_api_test/campaign_delivery_slot/test_campaign_delivery_slots_users_user_id_available_get.yml
+    testcase: testcases/basic_api_test/campaign_delivery_slot/test_campaign_delivery_slots_users_user_id_available_get.yml
+    output:
+      - campaign_delivery_slot_id
+
+- test:
+    name: testcases/basic_api_test/campaign_delivery_slot/test_campaign_delivery_slots_book_post.yml
+    base_url: ${ENV(base_url_sg)}
+    api: api_campain_delivery_slots_campaign_delivery_slot_id_users_user_id_book_POST()
+    validate:
+      - eq: ["status_code", 200]
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

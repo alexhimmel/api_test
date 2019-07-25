@@ -1,0 +1,17 @@
+- test:
+    name: testcases/basic_api_test/token/test_oauth_token_post.yml
+    testcase: testcases/basic_api_test/token/test_oauth_token_post.yml
+    output:
+      - access_token
+
+- test:
+    name: testcases/basic_api_test/newsletter/test_subscriptions_post.yml
+    skipIf: ${skip_subscription()}
+    base_url: ${ENV(sg_stag)}
+    api: api_subscriptions_POST()
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

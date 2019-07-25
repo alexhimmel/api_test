@@ -1,0 +1,33 @@
+- test:
+    name: testcases/api_output/get_web_stag_token.yml
+    testcase: testcases/api_output/get_web_stag_token.yml
+    output:
+      - access_token_sg_stag
+
+- test:
+    name: testcases/api_output/get_web_stag_order_number.yml
+    testcase: testcases/api_output/get_web_stag_order_number.yml
+    output:
+      - order_number_sg_stag
+
+- test:
+    name: testcases/basic_api_test/test_stripe_web/test_checkout_order_stripe_checkout_post.yml
+    base_url: ${ENV(base_url_pos_sg)}
+    skip: "same test in checkout_confirm_payment_put.yml"
+    request:
+      url: /api/checkouts/$order_number_sg_stag/stripe_checkout
+      method: POST
+      headers:
+        Content-Type: application/json
+        Accept-Encoding: deflate, gzip;q=1.0, *;q=0.5
+        x-channel: pos
+        x-access-token: $access_token_sg_stag
+      json:
+        payment_method_id: 17
+        payment_intent_id: pi_1EaH2yDbGX8mMPedEQJ2Pn7a
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

@@ -1,0 +1,5 @@
+- api:
+    def: api_sitemap_GET()
+    request:
+      url: api/sitemap/variants
+      method: GET

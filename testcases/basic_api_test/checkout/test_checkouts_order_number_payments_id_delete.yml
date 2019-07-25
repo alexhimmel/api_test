@@ -1,0 +1,17 @@
+- test:
+    name: testcases/basic_api_test/checkout/test_checkouts_order_number_payments_post.yml
+    testcase: testcases/basic_api_test/checkout/test_checkouts_order_number_payments_post.yml
+    output:
+      - access_token_pos
+      - pos_order_number
+      - pos_guest_token
+      - pos_payment_id
+
+- test:
+    name: testcases/basic_api_test/checkout/test_checkouts_order_number_payments_id_delete.yml
+    base_url: ${ENV(sg_pos)}
+    api: api_checkouts_order_number_payments_id_DELETE()
+    validate:
+      - eq: ["status_code", 200]
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

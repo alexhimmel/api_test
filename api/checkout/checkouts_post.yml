@@ -1,0 +1,8 @@
+- api:
+    def: api_checkouts_POST()
+    request:
+      url: /api/checkouts
+      method: POST
+      headers:
+        x-access-token: $access_token
+        x-channel: web

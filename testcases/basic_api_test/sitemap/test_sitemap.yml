@@ -1,0 +1,18 @@
+- config:
+    name: test_sitemap
+    base_url: ${ENV(sg_stag)}
+    request:
+      headers:
+        Content-Type: application/json
+        Accept-Encoding: deflate, gzip;q=1.0, *;q=0.5
+        x-channel: web
+
+- test:
+    name: testcases/basic_api_test/sitemap/test_sitemap.yml
+    api: api_sitemap_GET()
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

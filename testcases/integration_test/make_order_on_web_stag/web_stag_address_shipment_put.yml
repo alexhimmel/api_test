@@ -1,0 +1,91 @@
+- test:
+    name: add_cart_address
+    testcase: testcases/integration_test/make_order_on_web_stag/web_stag_add_cart_checkout.yml
+    output:
+      - access_token_sg_stag
+      - order_number_sg_stag
+
+- test:
+    name: get_address
+    testcase: testcases/integration_test/make_order_on_web_stag/web_stag_get_my_address.yml
+    output:
+      - address_address1
+      - address_city
+      - address_country
+      - address_firstname
+      - address_flat
+      - address_id
+      - address_is_company
+      - address_lastname
+      - address_level
+      - address_phone
+      - address_street
+      - address_street_number
+      - address_zipcode
+
+- test:
+    name: put_address_for_order
+    base_url: ${ENV(base_url_sg_stag)}
+    request:
+      url: /api/checkouts/$order_number_sg_stag/address
+      method: PUT
+      headers:
+        x-channel: web
+        x-access-token: $access_token_sg_stag
+      json:
+        ship_address_attributes:
+          id: $address_id
+          firstname: $address_firstname
+          lastname: $address_lastname
+          address1: $address_address1
+          phone: $address_phone
+          zipcode: $address_zipcode
+          city: $address_city
+          street: $address_street
+          street_number: $address_street_number
+          level: $address_level
+          flat: $address_flat
+          is_company: $address_is_company
+          country: $address_country
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}
+
+- test:
+    name: checkout_put
+    base_url: ${ENV(base_url_sg_stag)}
+    request:
+      url: /api/checkouts/$order_number_sg_stag
+      method: PUT
+      headers:
+        x-channel: web
+        x-access-token: $access_token_sg_stag
+      json:
+        special_instructions: ${create_random_string()}
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}
+
+- test:
+    name: delivery_put
+    base_url: ${ENV(base_url_sg_stag)}
+    request:
+      url: /api/checkouts/$order_number_sg_stag/delivery
+      method: PUT
+      headers:
+        x-channel: web
+        x-access-token: $access_token_sg_stag
+    validate:
+      - eq: ["status_code", 200]
+    extract:
+      shipment_id: content.shipments.0.id
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

@@ -1,0 +1,9 @@
+- api:
+    def: api_reviews_review_id_message_id_DELETE()
+    request:
+      url: /api/reviews/${ENV(review_id)}/messages/$dreview_message_id
+      method: DELETE
+      headers:
+        x-channel: web
+        x-access-token: $access_token_sg_stag
+

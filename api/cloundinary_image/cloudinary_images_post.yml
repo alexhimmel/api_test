@@ -1,0 +1,10 @@
+- api:
+    def: api_cloudinary_images_POST()
+    request:
+      url: /api/cloudinary_images
+      method: POST
+      headers:
+        Content-Type: ${multipart_content_type($multipart_encoder)}
+      data: $multipart_encoder
+
+

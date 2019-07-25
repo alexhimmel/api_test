@@ -1,0 +1,18 @@
+- test:
+    name: testcases/api_output/get_pos_order_number.yml
+    testcase: testcases/api_output/get_pos_order_number.yml
+    output:
+      - access_token_pos
+      - pos_order_number
+      - pos_guest_token
+
+- test:
+    name: testcases/basic_api_test/pos/test_checkouts_order_number_payments_post.yml
+    base_url: ${ENV(sg_pos)}
+    api: api_pos_checkouts_order_payments_POST()
+    extract:
+      pos_payment_id: content.0.id
+    validate:
+      - eq: ["status_code", 201]
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

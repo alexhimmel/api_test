@@ -1,0 +1,69 @@
+- test:
+    name: get_case_list
+    testcase: testcases/basic_api_test/casehub/test_get_case_list.yml
+    output:
+      - attachments
+      - case_number
+      - country
+      - created_at
+      - delivery_date
+      - delivery_order_number
+      - delivery_team
+      - delivery_team_id
+      - id
+      - issue_type
+      - issue_type_id
+      - order_number
+      - product_lot
+      - product_name
+      - product_quantity
+      - product_sku
+      - reporter
+      - reporter_id
+      - resolution_details
+      - resolution_type
+      - resolution_type_id
+      - summary
+      - supplier
+      - supplier_id
+      - updated_at
+
+- test:
+    name: test_testcase_put
+    base_url: ${ENV(casehub_stag)}
+    request:
+      url: /api/cases/$id
+      method: PUT
+      headers:
+        authorization: ${get_casehub_login_authorization()}
+        cookie: ${get_casehub_login_cookie()}
+        country: sg
+      json:
+        attachments: []
+        case_number: $case_number
+        country: $country
+        customer_name: ${create_random_name()}
+        delivery_date: $delivery_date
+        delivery_team: $delivery_team
+        delivery_team_id: $delivery_team_id
+        id: $id
+        issue_type: $issue_type
+        issue_type_id: $issue_type_id
+        memos: []
+        order_number: $order_number
+        product_name: $product_name
+        product_quantity: $product_quantity
+        product_sku: $product_sku
+        reporter: $reporter
+        reporter_id: $reporter_id
+        resolution_details: ${create_random_string()}
+        resolution_type: $resolution_type
+        resolution_type_id: $resolution_type_id
+        summary: ${create_random_string()}
+        supplier: $supplier
+        supplier_id: $supplier_id
+        updated_at: ${today()}
+    validate:
+      - eq: ["status_code", 200]
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

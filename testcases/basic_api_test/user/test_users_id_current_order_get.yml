@@ -1,0 +1,111 @@
+- test:
+    name: testcases/basic_api_test/token/test_oauth_token_post.yml
+    testcase: testcases/basic_api_test/token/test_oauth_token_post.yml
+    output:
+      - access_token
+
+- test:
+    name: search_product_autocomplete
+    base_url: ${ENV(sg_stag)}
+    request:
+      url: api/autocomplete
+      method: GET
+      headers:
+        x-access-token: $access_token
+        x-channel: web
+      params:
+        q: ${random_alphabet()}
+    extract:
+      slug: content.0.slug
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}
+
+- test:
+    name: from_search_result_get_variant
+    base_url: ${ENV(sg_stag)}
+    request:
+      url: /api/products/$slug
+      method: GET
+      headers:
+        x-access-token: $access_token
+        x-channel: web
+    extract:
+      variant_id: content.variants.0.id
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}
+
+- test:
+    name: checkout_get_order_number
+    base_url: ${ENV(sg_stag)}
+    request:
+      url: /api/checkouts
+      method: POST
+      headers:
+        x-access-token: $access_token
+        x-channel: web
+    extract:
+      order_number: content.number
+    validate:
+      - eq: ["status_code", 201]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}
+
+- test:
+    name: checkout_order_number_put
+    base_url: ${ENV(sg_stag)}
+    request:
+      url: /api/checkouts/$order_number
+      method: PUT
+      headers:
+        x-access-token: $access_token
+        x-channel: web
+      json:
+        city: "Singapore"
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}
+
+- test:
+    name: line_item_put
+    base_url: ${ENV(sg_stag)}
+    request:
+      url: api/checkouts/$order_number/line_items
+      method: post
+      headers:
+        x-access-token: $access_token
+        x-channel: web
+      json:
+        quantity: 1
+        variant_id: $variant_id
+    validate:
+      - eq: ["status_code", 201]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}
+
+- test:
+    name: testcases/basic_api_test/user/test_users_id_current_order_get.yml
+    base_url: ${ENV(sg_stag)}
+    api: api_users_id_current_order_GET()
+    extract:
+      order_id: content.id
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

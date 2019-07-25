@@ -1,0 +1,29 @@
+- test:
+    name: testcases/api_output/get_pos_order_number.yml
+    testcase: testcases/api_output/get_pos_order_number.yml
+    output:
+      - access_token_pos
+      - pos_order_number
+
+- test:
+    name: testcases/api_output/get_pos_line_items_id.yml
+    base_url: ${ENV(sg_pos)}
+    variables:
+      - variant_id: ${ENV(variant_id_02)}
+    request:
+      url: /api/checkouts/$pos_order_number/line_items
+      method: POST
+      headers:
+        x-channel: pos
+        x-access-token: $access_token_pos
+      json:
+        options:
+          preferred_stock_location_id: 1
+        quantity: 1
+        variant_id: $variant_id
+    extract:
+      line_items_id_stag: content.line_items.0.id
+    validate:
+      - eq: ["status_code", 201]
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

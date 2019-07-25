@@ -1,0 +1,91 @@
+- test:
+    name: get_stripe_public_key
+    base_url: ${ENV(base_url_sg_stag)}
+    request:
+      url: /api/stripe_public_api_key
+      method: GET
+      headers:
+        x-channel: web
+        x-access-token: $access_token_sg_stag
+    extract:
+      stripe_public_api_key: content.public_api_key
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}
+
+- test:
+    name: payment_methods_stripe
+    base_url: https://api.stripe.com
+    variables:
+      - card_number: ${ENV(stripe_card_number)}
+    request:
+      url: /v1/payment_methods
+      method: POST
+      headers:
+        Accept: application/json
+        Content-Type: application/x-www-form-urlencoded
+        Origin: https://js.stripe.com
+        Referer: https://js.stripe.com/v3/controller-e8b220ab42ded8ff66dee3b65100a776.html
+        User-Agent: ${ENV(user_agent_stag)}
+      data:
+        type: card
+        billing_details[address][city]: $city
+        billing_details[address][country]: SG
+        billing_details[address][line1]: $address1
+        billing_details[address][postal_code]: $zipcode
+        billing_details[email]: $email_address
+        billing_details[name]: $first_name $last_name
+        billing_details[phone]: $phone
+        card[number]: $card_number
+        card[cvc]: 111
+        card[exp_month]: 08
+        card[exp_year]: 28
+        guid: 1b1dbd97-88d0-4c99-bcb8-1a45f5f7fccd
+        muid: 797aba23-30e8-4079-916d-6b152df5d162
+        sid: e38036d4-ae43-4a5c-b51d-1b4d0a534519
+        payment_user_agent: stripe.js/a7fd449c; stripe-js-v3/a7fd449c
+        referrer: https://stag.castlery.com/checkout/payment
+        key: $stripe_public_api_key
+    extract:
+      stripe_payment_id: content.id
+    validate:
+      - eq: ["status_code", 200]
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}
+
+- test:
+    name: stripe_checkout_put
+    base_url: ${ENV(base_url_sg_stag)}
+    request:
+      url: /api/checkouts/$order_number_sg_stag/stripe_checkout
+      method: PUT
+      headers:
+        x-channel: web
+        x-access-token: $access_token_sg_stag
+      json:
+        payment_method_id: $stripe_payment_id
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}
+
+- test:
+    name: checkout_complete
+    base_url: ${ENV(base_url_sg_stag)}
+    request:
+      url: /api/checkouts/$order_number_sg_stag/complete
+      method: PUT
+      headers:
+        x-channel: web
+        x-access-token: $access_token_sg_stag
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

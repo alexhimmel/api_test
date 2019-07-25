@@ -1,0 +1,14 @@
+- test:
+    name: pos_stripe_terminal_connection_token_post
+    base_url: ${ENV(base_url_pos_sg)}
+    request:
+      url: /api/stripe_terminal_connection_token
+      method: POST
+    extract:
+      terminal.connection_token: content.object
+      secret: content.secret
+    validate:
+      - eq: ["status_code", 200]
+      - eq: ["content.object", "terminal.connection_token"]
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

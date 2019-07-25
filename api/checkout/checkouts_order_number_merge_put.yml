@@ -1,0 +1,12 @@
+- api:
+    def: api_checkouts_order_number_merge_PUT()
+    request:
+      url: /api/checkouts/$order_number/merge
+      method: PUT
+      headers:
+        x-channel: web
+        x-access-token: $access_token
+      json:
+        order_to_merge: $guest_order_number
+        order_token: $guest_token
+        warning_message_delay: false

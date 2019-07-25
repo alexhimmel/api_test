@@ -1,0 +1,13 @@
+- api:
+    def: api_reviews_GET()
+    request:
+      url: /api/reviews
+      method: GET
+      headers:
+        x-channel: web
+      json:
+        page: 1
+        per_page: 2
+      params:
+        product_id: $line_item_id
+

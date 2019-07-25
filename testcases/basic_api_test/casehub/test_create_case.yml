@@ -1,0 +1,32 @@
+- test:
+    name: test_create_case
+    base_url: ${ENV(casehub_stag)}
+    request:
+      url: /api/cases
+      method: POST
+      headers:
+        authorization: ${get_casehub_login_authorization()}
+        cookie: ${get_casehub_login_cookie()}
+        country: sg
+      json:
+        attachments: []
+        customer_name: ${create_random_name()}
+        delivery_date: ${delivery_date()}
+        delivery_team_id: ${get_delivery_team_id()}
+        id: 0
+        issue_type_id: ${get_issue_type_id()}
+        order_number: ${create_random_order_number()}
+        product_name: ${create_random_string()}
+        product_quantity: 1
+        product_sku: ${create_random_string()}
+        resolution_details: ${create_random_string()}
+        resolution_type_id: ${get_resolution_type_id()}
+        summary: ${create_random_string()}
+        supplier_id: ${get_supplier_id()}
+    extract:
+      case_number: content.case_number
+    validate:
+      - eq: ["status_code", 200]
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}
+

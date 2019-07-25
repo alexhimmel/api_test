@@ -1,0 +1,5 @@
+- api:
+    def: api_stripe_public_api_key_GET()
+    request:
+      url: /api/stripe_public_api_key
+      method: GET

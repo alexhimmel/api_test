@@ -1,0 +1,18 @@
+- test:
+    name: post_supplier
+    base_url: ${ENV(casehub_stag)}
+    request:
+      url: /api/configurations/supplier
+      method: POST
+      headers:
+        authorization: ${get_casehub_login_authorization()}
+        cookie: ${get_casehub_login_cookie()}
+        country: sg
+      json:
+        code: ${create_random_string()}
+        name: ""
+        remark: ""
+    validate:
+      - eq: ["status_code", 200]
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

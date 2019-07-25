@@ -1,0 +1,25 @@
+- test:
+    name: testcases/api_output/get_web_new_user_token_id_on_sg_prod.yml
+    base_url: ${ENV(base_url_sg)}
+    request:
+      url: /api/users
+      method: POST
+      headers:
+        Content-Type: application/json
+        Accept-Encoding: deflate, gzip;q=1.0, *;q=0.5
+        x-channel: web
+      json:
+        email: ${create_random_email()}
+        firstname: ${ENV(first_name)}
+        lastname: ${ENV(last_name)}
+        password: ${ENV(password_api_test)}
+        phone: ${create_random_phone_number()}
+    extract:
+      new_user_id: content.user.id
+      new_user_hash: content.user.user_hash
+      new_user_refresh_token: content.access_token.refresh_token
+      new_user_access_token: content.access_token.access_token
+    validate:
+      - eq: ["status_code", 201]
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

@@ -1,0 +1,18 @@
+- test:
+    name: testcases/basic_api_test/checkout/test_checkouts_order_number_confirm_payment_put.yml
+    testcase: testcases/basic_api_test/checkout/test_checkouts_order_number_confirm_payment_put.yml
+    output:
+      - access_token_pos
+      - pos_order_number
+
+- test:
+    name: testcases/basic_api_test/checkout/test_checkouts_order_number_complete_put.yml
+    base_url: ${ENV(base_url_pos_sg)}
+    request:
+      url: /api/checkouts/$pos_order_number/complete
+      method: PUT
+      headers:
+        x-channel: pos
+        x-access-token: $access_token_pos
+    validate:
+      - eq: ["status_code", 200]

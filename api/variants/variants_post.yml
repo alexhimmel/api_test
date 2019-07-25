@@ -1,0 +1,13 @@
+- api:
+    def: api_variant_POST()
+    request:
+      url: /api/variant
+      method: POST
+      params:
+        product_id: $product_id
+        variant_id: $variant_id
+        quantity: 1
+        options:
+          customizations:
+            - option_id: 0
+            - variant_id: 0

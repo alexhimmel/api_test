@@ -1,0 +1,6 @@
+- api:
+    def: api_menus_GET()
+    request:
+      url: /api/menus
+      method: GET
+

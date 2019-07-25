@@ -1,0 +1,5 @@
+- api:
+    def: api_retails_GET()
+    request:
+      url: /api/retails
+      method: GET

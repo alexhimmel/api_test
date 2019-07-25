@@ -1,0 +1,14 @@
+- test:
+    name: test_new_email_subscriptions_post
+    base_url: ${ENV(sg_stag)}
+    request:
+      url: /api/subscriptions
+      method: POST
+      json:
+        email: ${create_random_email()}
+    validate:
+      - eq: ["status_code", 201]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

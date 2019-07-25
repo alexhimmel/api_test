@@ -1,0 +1,39 @@
+- test:
+    name: search_product_with_autocomplete
+    base_url: ${ENV(base_url_sg_stag)}
+    request:
+      url: /api/autocomplete
+      method: GET
+      headers:
+        x-channel: web
+        x-access-token: $access_token_sg_stag
+      json:
+        q: ${ENV(search_product_q)}
+    extract:
+      product_slug: content.0.slug
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}
+
+- test:
+    name: selected_product_leadtime_and_shipping_fee
+    base_url: ${ENV(base_url_sg_stag)}
+    request:
+      url: /api/estimates/leadtime_shipping_fee
+      method: POST
+      headers:
+        x-channel: web
+        x-access-token: $access_token_sg_stag
+      json:
+        city: Singapore
+        quantity: 1
+        variant_id: 18
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

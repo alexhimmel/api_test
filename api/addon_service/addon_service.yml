@@ -1,0 +1,5 @@
+- api:
+    def: api_addon_service_GET()
+    request:
+      url: /api/addon_services
+      method: GET

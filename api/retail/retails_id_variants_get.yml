@@ -1,0 +1,11 @@
+- api:
+    def: api_retails_id_variants_GET()
+    request:
+      url: /api/retails/${ENV(retails_store_id)}/variants
+      method: GET
+      headers:
+        x-channel: pos
+        x-access-token: $access_token_pos
+      json:
+        page: 1
+        per_page: 20

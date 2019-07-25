@@ -1,0 +1,11 @@
+- api:
+    def: api_sales_users_id_orders_GET()
+    request:
+      url: /api/sales_users/me/orders
+      method: GET
+      headers:
+        x-channel: pos
+        x-access-token: $access_token_pos
+      json:
+        page: 1
+        per_page: 10

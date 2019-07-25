@@ -1,0 +1,8 @@
+- api:
+    def: api_variant_collections_permalink_GET()
+    request:
+      url: /api/variant_collections/$collection_permalink
+      method: GET
+      headers:
+        x-channel: web
+

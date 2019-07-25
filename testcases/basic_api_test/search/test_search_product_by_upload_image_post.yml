@@ -1,0 +1,16 @@
+- test:
+    name: testcases/basic_api_test/search/test_search_product_by_upload_image_post.yml
+    variables:
+      - field_name: ${ENV(image_name_01)}
+      - file_path: ${ENV(image_path)}
+      - file_type: "image/jpg"
+      - multipart_encoder: ${multipart_encoder($field_name, $file_path, $file_type)}
+    base_url: ${ENV(base_url_sg_stag)}
+    api: api_search_product_by_upload_image_POST()
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}
+

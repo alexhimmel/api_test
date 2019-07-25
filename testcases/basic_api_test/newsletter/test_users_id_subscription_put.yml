@@ -1,0 +1,13 @@
+- test:
+    name: testcases/api_output/get_token.yml
+    testcase: testcases/api_output/get_token.yml
+    output:
+      - access_token
+
+- test:
+    name: testcases/basic_api_test/newsletter/test_users_id_subscription_put_to_unsub.yml
+    testcase: testcases/basic_api_test/newsletter/test_users_id_subscription_put_to_unsub.yml
+
+- test:
+    name: testcases/basic_api_test/newsletter/test_users_id_subscription_put_to_sub.yml
+    testcase: testcases/basic_api_test/newsletter/test_users_id_subscription_put_to_sub.yml

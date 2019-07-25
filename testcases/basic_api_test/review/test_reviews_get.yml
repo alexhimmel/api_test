@@ -1,0 +1,12 @@
+- test:
+    name: testcases/basic_api_test/review/test_reviews_get.yml
+    base_url: ${ENV(sg_stag)}
+    variables:
+      - line_item_id: ${ENV(line_item_id)}
+    api: api_reviews_GET()
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

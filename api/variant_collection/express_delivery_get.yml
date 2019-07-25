@@ -1,0 +1,8 @@
+- api:
+    def: api_express_delivery_GET()
+    request:
+      url: /api/express_delivery
+      method: GET
+      params:
+        lead_time: $lead_time
+        size: $size

@@ -1,0 +1,16 @@
+- config:
+    name: test_addon_service
+    base_url: https://stag.castlery.com
+    request:
+      headers:
+        Content-Type: application/json
+        Accept-Encoding: deflate, gzip;q=1.0, *;q=0.5
+        x-channel: web
+
+- test:
+    name: api_swatches_get
+    api: api_swatch_GET()
+    validate:
+      - eq: ["status_code", 200]
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}

@@ -1,0 +1,10 @@
+- api:
+    def: api_pos_chekcouts_order_number_line_items_id_overwrite_price_PUT()
+    request:
+      url: /api/checkouts/$pos_order_number/line_items/${ENV(variant_id_01)}/overwrite_price
+      method: PUT
+      headers:
+        x-channel: pos
+        x-access-token: $access_token_pos
+      json:
+        price: 999

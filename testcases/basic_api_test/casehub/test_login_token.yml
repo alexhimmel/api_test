@@ -1,0 +1,15 @@
+- test:
+    name: testcases/basic_api_test/casehub/test_login_token.yml
+    base_url: ${ENV(casehub_stag)}
+    request:
+      url: /api/auth/login
+      method: POST
+      json:
+        email: ${ENV(casehub_user)}
+        password: ${ENV(casehub_pass)}
+    extract:
+      token: content.token
+    validate:
+      - eq: ["status_code", 200]
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

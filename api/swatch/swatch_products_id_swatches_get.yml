@@ -1,0 +1,5 @@
+- api:
+    def: api_products_id_swatch_GET()
+    request:
+      url: /api/products/$product_id/swatches
+      method: GET

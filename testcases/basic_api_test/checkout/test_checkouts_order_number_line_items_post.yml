@@ -1,0 +1,22 @@
+- test:
+    name: testcases/basic_api_test/checkout/test_checkouts_post.yml
+    testcase: testcases/basic_api_test/checkout/test_checkouts_post.yml
+    output:
+      - access_token
+      - order_number
+
+- test:
+    name: testcases/basic_api_test/checkout/test_checkouts_order_number_line_items_post.yml
+    base_url: ${ENV(sg_stag)}
+    variables:
+      - quantity: 1
+      - variant_id_01: ${ENV(variant_id_01)}
+    api: api_checkout_order_number_line_items_POST()
+    validate:
+      - eq: ["status_code", 201]
+    extract:
+      line_items_id: content.line_items.0.id
+    setup_hooks:
+      - ${setup_hook_basicauth($request)}
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}

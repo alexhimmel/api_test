@@ -1,0 +1,21 @@
+- test:
+    name: test_create_new_user
+    testcase: testcases/basic_api_test/casehub/test_create_new_user.yml
+    output:
+      - user_id
+
+- test:
+    name: test_delete_user
+    base_url: ${ENV(casehub_stag)}
+    request:
+      url: /api/users/$user_id
+      method: DELETE
+      headers:
+        authorization: ${get_casehub_login_authorization()}
+        cookie: ${get_casehub_login_cookie()}
+        country: sg
+    validate:
+      - eq: ["status_code", 200]
+    teardown_hooks:
+      - ${teardown_hook_sleep($response)}
+
